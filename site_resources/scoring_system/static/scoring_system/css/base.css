@@ -1,0 +1,26 @@
+.navbar {
+    min-height: 10%;
+}
+  
+.navbar-brand {
+  padding: 0 15px;
+  height: 80px;
+  line-height: 80px;
+}
+  
+.navbar-toggle {
+  margin-top: 23px;
+  padding: 9px 10px !important;
+}
+  
+@media (min-width: 768px) {
+  .navbar-nav > li > a {
+    padding-top: 26.5px;
+    padding-bottom: 26.5px;
+    line-height: 27px;
+  }
+}
+
+.testhours {
+  font-family: cursive;
+}

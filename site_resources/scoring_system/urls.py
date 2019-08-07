@@ -2,7 +2,8 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('', views.login),
-    path('score', views.scoring_system),
-    path('manage', views.manage_event)
+    path('', views.ranking),
+    path('matchscore', views.match),
+    path('scoring', views.scoring),
+    path('login', views.login)
 ]
