@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import EventUser, ScoringCategory, ScoringCriteria
 
-# Register your models here.
+admin.site.register(EventUser)
+admin.site.register(ScoringCategory)
+admin.site.register(ScoringCriteria)
+
+
