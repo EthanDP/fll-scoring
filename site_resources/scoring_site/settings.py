@@ -117,4 +117,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ALLOWED_HOSTS = ['10.0.0.191']
+ALLOWED_HOSTS = ['10.0.0.191', 'localhost']

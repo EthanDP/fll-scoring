@@ -1,17 +1,20 @@
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
+from .models import ScoringCategory
 
-def ranking(request):
-    return render(request, 'scoring_system/ranking.html')
+def team_rankings(request): # Scoreboard/rankings of teams
+    return render(request, 'scoring_system/rankings.html')
 
-def match(request):
+def match(request): # Live view of match score for public
     return render(request, 'scoring_system/score_view.html')
 
-def scoring(request):
-    return render(request, 'scoring_system/home.html')
+def scoring(request): # Match scoring page for event users
+    context = {
+        'scoring_categories': ScoringCategory.objects.all(),
+    }
+    return render(request, 'scoring_system/scoring.html', context)
 
-def login(request):
+def login(request): # Login page for event scorekeeps/users
     return render(request, 'scoring_system/login.html')
 
-# Create your views here.

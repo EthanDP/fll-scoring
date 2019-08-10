@@ -1,9 +1,47 @@
 {% extends 'scoring_system/base.html' %}
+{% load static %}
 
 {% block head %}
     <title>Scoring System</title>
+    <link rel="stylesheet" href="{% static 'scoring_system/css/scoring.css' %}">
 {% endblock %}
 
 {% block content %}
     <h1>Scoring system (event user only)</h1>
+    {% for category in scoring_categories %}
+        <div class="scoring-parent">
+        <div class="scoring-category">
+            <table>
+                <tr>{{ category.category_name }}</tr>
+                <img src="{{ category.category_image.url }}">
+
+                {% for criteria in category.category_criteria.all %}
+                    <tr>
+                        <p>{{ criteria.task_description }}</p>
+                    </tr>
+                    <tr>
+                        {% if criteria.score_type == "b" %}
+                        <td>
+                            <p>Yes</p>
+                        </td>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        <td>
+                            <p>No</p>
+                        </td>
+                        <td>
+                            <input type="checkbox">
+                        </td>
+                        {% else %}
+                            <p>Something went wrong</p>
+                            <p>{{ criteria.score_type }}</p>
+                            <p>Heyo</p>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        </div>
+    {% endfor %}
 {% endblock %}
