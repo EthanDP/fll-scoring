@@ -4,6 +4,7 @@
 {% block head %}
     <title>Scoring System</title>
     <link rel="stylesheet" href="{% static 'scoring_system/css/scoring.css' %}">
+    <script type="text/javascript" src="{% static 'scoring_system/js/scoring.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -17,22 +18,22 @@
 
                 {% for criteria in category.category_criteria.all %}
                     <tr>
-                        <p>{{ criteria.task_description }}</p>
+                        <th class="criteria-header">{{ criteria.task_description }}</th>
                     </tr>
                     <tr>
                         {% if criteria.score_type == "b" %}
-                        <td>
-                            <p>Yes</p>
-                        </td>
-                        <td>
-                            <input type="checkbox">
-                        </td>
-                        <td>
-                            <p>No</p>
-                        </td>
-                        <td>
-                            <input type="checkbox">
-                        </td>
+                            <td>
+                                <label class="container">Yes
+                                    <input type="checkbox" name="checkYes" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" onclick="switchCheckBoxes('checkYes', '{{ forloop.counter }}', '{{ criteria.sub_category }}')">
+                                    <span class="checkmark"></span>  // sub-category 
+                                </label>
+                            </td>
+                            <td>
+                                <label class="container">No
+                                    <input type="checkbox" name="checkNo" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" onclick="switchCheckBoxes('checkNo', '{{ forloop.counter }}', '{{ criteria.sub_category }}')">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
                         {% else %}
                             <p>Something went wrong</p>
                             <p>{{ criteria.score_type }}</p>
@@ -44,4 +45,5 @@
         </div>
         </div>
     {% endfor %}
+    <script>defaultCheckBoxes();</script>
 {% endblock %}
