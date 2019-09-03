@@ -13,9 +13,10 @@
         <div class="scoring-parent">
         <div class="scoring-category">
             <table>
-                <tr>{{ category.category_name }}</tr>
-                <img src="{{ category.category_image.url }}">
-
+                <tr>
+                    <th class="category-header">{{ category.category_name }}</th>
+                </tr>
+                {% comment %}<img src="{{ category.category_image.url }}">{% endcomment %}
                 {% for criteria in category.category_criteria.all %}
                     <tr>
                         <th class="criteria-header">{{ criteria.task_description }}</th>
@@ -25,7 +26,7 @@
                             <td>
                                 <label class="container">Yes
                                     <input type="checkbox" name="checkYes" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" onclick="switchCheckBoxes('checkYes', '{{ forloop.counter }}', '{{ criteria.sub_category }}')">
-                                    <span class="checkmark"></span>  // sub-category 
+                                    <span class="checkmark"></span>
                                 </label>
                             </td>
                             <td>
@@ -33,6 +34,10 @@
                                     <input type="checkbox" name="checkNo" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" onclick="switchCheckBoxes('checkNo', '{{ forloop.counter }}', '{{ criteria.sub_category }}')">
                                     <span class="checkmark"></span>
                                 </label>
+                            </td>
+                        {% elif criteria.score_type == "i" %}
+                            <td>
+                                <input type="number" class="int-input" name="intInput" style="width: 100px;height: 30px" min="0" >
                             </td>
                         {% else %}
                             <p>Something went wrong</p>

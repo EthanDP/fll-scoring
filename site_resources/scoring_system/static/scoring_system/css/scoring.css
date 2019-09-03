@@ -6,6 +6,15 @@
     text-align: center;
 }
 
+.category-header {
+  font-weight: bold;
+}
+
+.criteria-header {
+  font-family: cursive;
+  font-weight: normal !important;
+}
+
 /* Customize the label (the container) */
 .container {
     display: block;
@@ -77,4 +86,16 @@
     position: relative;
     top: -1px;
     *overflow: hidden;
+  }
+  th{
+    height: 10px;
+    width: 300px;
+    text-align: center; 
+    padding-left: 0px;
+  }
+  td {
+    float:left;
+    text-align: left;
+    width: 50px;
+    padding-left: 78px;
   }

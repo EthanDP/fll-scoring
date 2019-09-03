@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'scoring_system'
+    'scoring_system',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'scoring_site.urls'
+ASGI_APPLICATION = 'scoring_site.routing.application'
 
 TEMPLATES = [
     {
@@ -117,4 +119,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ALLOWED_HOSTS = ['10.0.0.191', 'localhost']
+ALLOWED_HOSTS = ['198.168.56.1', '0.0.0.0', 'localhost']
