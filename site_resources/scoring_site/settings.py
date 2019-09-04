@@ -54,7 +54,7 @@ ASGI_APPLICATION = 'scoring_site.routing.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,3 +120,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 ALLOWED_HOSTS = ['198.168.56.1', '0.0.0.0', 'localhost']
+
+LOGIN_REDIRECT_URL = '/scoring'
