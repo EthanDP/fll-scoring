@@ -16,7 +16,3 @@ def scoring(request): # Match scoring page for event users
         'scoring_categories': ScoringCategory.objects.all(),
     }
     return render(request, 'scoring_system/scoring.html', context)
-
-def login(request): # Login page for event scorekeeps/users
-    return render(request, 'scoring_system/login.html')
-
