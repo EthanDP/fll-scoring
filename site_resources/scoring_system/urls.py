@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path('', views.team_rankings),
-    path('matchscore', views.match),
+    path('match', views.match),
     path('scoring', views.scoring),
 ]
 
