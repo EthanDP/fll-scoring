@@ -80,6 +80,8 @@ DATABASES = {
     }
 }
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -119,6 +121,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-ALLOWED_HOSTS = ['198.168.56.1', '0.0.0.0', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 LOGIN_REDIRECT_URL = '/scoring'

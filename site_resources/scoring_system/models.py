@@ -16,8 +16,12 @@ class Team(models.Model):
 
 class ScoringCriteria(models.Model):
     # The individual tasks in a scoring category, can only be modified by
+
     task_description = models.TextField()
-    score_type = models.CharField(max_length=2) # b = yes/no, i = integer
+    score_type = models.CharField(max_length=2) # b = yes/no, i = integer, t = three
+    t_option1 = models.TextField(blank=True) # Only filled out if there are three options
+    t_option2 = models.TextField(blank=True) 
+    t_option3 = models.TextField(blank=True) 
     max_input = models.SmallIntegerField(blank=True, default=1)
     score_multiplier = models.SmallIntegerField()
     sub_category = models.CharField(max_length=10) # If a criteria is boolean based (yes or no) and shares
@@ -28,11 +32,10 @@ class ScoringCriteria(models.Model):
     def __str__ (self):
         return self.task_description
 
-
 class ScoringCategory(models.Model):
     # An individual category containing one or more scoring criteria
     category_name = models.CharField(max_length=50)
-    category_image = models.FileField(null=True, blank=True)
+    category_image = models.ImageField(null=True, blank=True, upload_to='images/')
     category_criteria = models.ManyToManyField(ScoringCriteria, symmetrical=False)
 
     def __str__ (self):

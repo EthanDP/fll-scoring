@@ -13,10 +13,12 @@
         <div class="scoring-parent">
         <div class="scoring-category">
             <table>
-                <tr>
-                    <th class="category-header">{{ category.category_name }}</th>
+                <tr class="category-header">
+                    {{ category.category_name }}
                 </tr>
-                {% comment %}<img src="{{ category.category_image.url }}">{% endcomment %}
+                <th class="image-cell" rowspan="0">
+                    <img class="category-image" src="{{ category.category_image.url }}">
+                </th>
                 {% for criteria in category.category_criteria.all %}
                     <tr>
                         <th class="criteria-header">{{ criteria.task_description }}</th>
@@ -38,6 +40,25 @@
                         {% elif criteria.score_type == "i" %}
                             <td>
                                 <input type="number" class="int-input" name="intInput" style="width: 100px;height: 30px" min="0" >
+                            </td>
+                        {% elif criteria.score_type == "t" %}
+                            <td>
+                                <label class="container">{{ criteria.t_option1 }}
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="container">{{ criteria.t_option2 }}
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="container">{{ criteria.t_option3 }}
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                </label>
                             </td>
                         {% else %}
                             <p>Something went wrong</p>

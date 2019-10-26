@@ -3,15 +3,25 @@
 }
 
 .scoring-parent {
-    text-align: center;
+  text-align: center;
 }
 
 .category-header {
   font-weight: bold;
+  colspan: "2";
+  text-align: center;
+}
+
+.image-cell {
+  
+}
+
+.category-image {
+  width: 20%;
 }
 
 .criteria-header {
-  font-family: cursive;
+  font-family: sans-serif;
   font-weight: normal !important;
 }
 
