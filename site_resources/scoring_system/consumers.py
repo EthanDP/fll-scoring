@@ -1,6 +1,5 @@
 import asyncio
 import json
-<<<<<<< HEAD
 from django.contrib.auth import get_user_model
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
@@ -16,7 +15,3 @@ class ScoreConsumer(AsyncConsumer):
 
     async def websocket_disconnected(self, event):
         print("disconnected ", event)
-=======
-from channels.generic.websocket import WebsocketConsumer
-from channels.consumer import AsyncConsumer
->>>>>>> 42cd9c334f1b9a76667a19767a9a90099bbb1f6e
