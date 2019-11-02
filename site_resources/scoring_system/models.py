@@ -1,5 +1,10 @@
 from django.db import models
 
+from django.conf import settings
+from django.db import models
+from django.db.models import Q
+
+# Scoring Page Elements
 class EventUser(models.Model):
     # Account data for event scorekeepers
     username = models.CharField(max_length=20)
@@ -40,3 +45,17 @@ class ScoringCategory(models.Model):
 
     def __str__ (self):
         return self.category_name
+
+# Channels and async stuff
+class ThreadManager(models.Manager):
+    pass
+
+class Thread(models.Model):
+    pass
+
+class LiveScore(models.Model):
+    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.SET_NULL)
+    team = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL)
+    #color = models.CharField()
+    score = models.SmallIntegerField(blank=True, default=0)
+

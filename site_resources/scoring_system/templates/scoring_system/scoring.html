@@ -71,5 +71,31 @@
         </div>
         </div>
     {% endfor %}
-    <script>defaultCheckBoxes();</script>
+    <script>
+        defaultCheckBoxes();
+        
+        var loc = window.location;
+
+        var wsStart = 'ws://'
+        if (loc.protocol == 'https:'){
+            wsStart = 'wss://';
+        }
+
+        var endpoint = wsStart + window.location.host + '/match';
+        var socket = new WebSocket(endpoint);
+        console.log(endpoint);
+
+        socket.onmessage = function(e){
+            console.log("score update", e);
+        }
+        socket.onopen = function(e){
+            console.log("open", e);
+        }
+        socket.onerror = function(e){
+            console.log("error", e);
+        }
+        socket.onclose = function(e){
+            console.log("close", e);
+        }
+    </script>
 {% endblock %}
