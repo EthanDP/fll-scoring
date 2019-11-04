@@ -12,16 +12,17 @@ console.log(endpoint);
 socket.onmessage = function(e){
     console.log("Got websocket message " + e.data);
     var data = e.data;
-    console.log(data);
     if (data == 'connected') {
         document.querySelector('#connection-status').innerHTML = "User Connected";
-    } if (data) {
+    } else if (data.includes('red')) {
         document.querySelector('#red-score').innerHTML = data;
+    } else if (data.includes('blue')) {
+        document.querySelector('#blue-score').innerHTML = data;
     }
 }
 
 socket.onopen = function(e){
-    console.log("User Connected");
+    console.log("User Connected");-
     socket.send(JSON.stringify({
         'message': "connected"
     }));

@@ -23,14 +23,22 @@ class ScoreConsumer(AsyncConsumer):
         print(data)
         if data:
             loaded_data = json.loads(data)
-
-            await self.channel_layer.group_send(
-                "match_view",
-                {
-                    'type': 'score_update',
-                    'text': loaded_data['message']
-                }
-            )
+            if loaded_data['message'] == 'connected':
+                await self.channel_layer.group_send(
+                    "match_view",
+                    {
+                        'type': 'score_update',
+                        'text': 'score request'
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    "match_view",
+                    {
+                        'type': 'score_update',
+                        'text': loaded_data['message']
+                    }
+                )
 
     async def score_update(self, event):
         await self.send({

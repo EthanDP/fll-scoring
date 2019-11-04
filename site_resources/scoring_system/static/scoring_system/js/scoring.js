@@ -11,6 +11,13 @@ console.log(endpoint);
 
 socket.onmessage = function(e){
     console.log("score update", e);
+    var score = document.querySelector('#score-value').innerHTML;
+    //var team = document.querySelector('#selected-team').innerHTML;
+    if (data = 'score request') {
+        socket.send(JSON.stringify({
+            'message': 'red ' + score
+        }))
+    }
 }
 socket.onopen = function(e){
     console.log("open", e);
@@ -75,4 +82,16 @@ function switchCheckBoxes(boxType, criteriaID, subCategory) {
 
 function switchCheckBoxStatus() {
     console.log("Hey");
+}
+
+function buttonPress() {
+    updateScore()
+}
+
+function updateScore() {
+    var score = document.querySelector('#score-value').innerHTML;
+    //var team = document.querySelector('#selected-team').value;
+    socket.send(JSON.stringify({
+        'message': 'red ' + score
+    }))
 }
