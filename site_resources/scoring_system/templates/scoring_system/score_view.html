@@ -4,65 +4,14 @@
 {% block head %}
     <title>Match Score</title>
     <meta charset="utf-8"/>
-    <!--<script type="text/javascript" src="{% static 'scoring_system/js/scoreview.js' %}"></script>-->
 {% endblock %}
 
 {% block content %}
     <h1>Live Score View</h1>
-    <h1 id="redscore">0</h1>
-    <h1 id="bluescore">0</h1>
+    <h3 id="connection-status"></h3>
+    <h1 id="red-score">0</h1>
+    <h1 id="blue-score">0</h1>
     <input type="button" id="test-button" value="Yee" style="padding: 50px 50px;">
     <input type="button" id="test-button2" value="Haw" style="padding: 50px 50px;">
-    <script>
-        var loc = window.location;
-
-        var wsStart = 'ws://'
-        if (loc.protocol == 'https:'){
-            wsStart = 'wss://';
-        }
-
-        var endpoint = wsStart + window.location.host + loc.pathname;
-        var socket = new WebSocket(endpoint);
-        console.log(endpoint);
-
-        socket.onmessage = function(e){
-            console.log("Got websocket message " + e.data);
-            var data = e.data;
-            console.log(data);
-            if (data == 'connected') {
-                document.querySelector('#bluescore').innerHTML = "User Connected";
-            } else {
-                document.querySelector('#redscore').innerHTML = data;
-            }
-        }
-
-        socket.onopen = function(e){
-            console.log("User Connected");
-            socket.send(JSON.stringify({
-                'message': "connected"
-            }));
-        }
-        socket.onerror = function(e){
-            console.log('error', e);
-        }
-        socket.onclose = function(e){
-            console.log('close', e);
-        }
-
-        document.querySelector('#test-button').onclick = function(e) {
-            var message = "Yee";
-            console.log("Help");
-            socket.send(JSON.stringify({
-                'message': message
-            }))
-        }
-
-        document.querySelector('#test-button2').onclick = function(e) {
-            var message = "Haw";
-            console.log("Help");
-            socket.send(JSON.stringify({
-                'message': message
-            }))
-        }
-    </script>
+    <script type="text/javascript" src="{% static 'scoring_system/js/scoreview.js' %}"></script>
 {% endblock %}

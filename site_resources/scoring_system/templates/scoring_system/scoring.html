@@ -4,7 +4,6 @@
 {% block head %}
     <title>Scoring System</title>
     <link rel="stylesheet" href="{% static 'scoring_system/css/scoring.css' %}">
-    <script type="text/javascript" src="{% static 'scoring_system/js/scoring.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -71,31 +70,5 @@
         </div>
         </div>
     {% endfor %}
-    <script>
-        defaultCheckBoxes();
-        
-        var loc = window.location;
-
-        var wsStart = 'ws://'
-        if (loc.protocol == 'https:'){
-            wsStart = 'wss://';
-        }
-
-        var endpoint = wsStart + window.location.host + '/match';
-        var socket = new WebSocket(endpoint);
-        console.log(endpoint);
-
-        socket.onmessage = function(e){
-            console.log("score update", e);
-        }
-        socket.onopen = function(e){
-            console.log("open", e);
-        }
-        socket.onerror = function(e){
-            console.log("error", e);
-        }
-        socket.onclose = function(e){
-            console.log("close", e);
-        }
-    </script>
+    <script type="text/javascript" src="{% static 'scoring_system/js/scoring.js' %}"></script>
 {% endblock %}
