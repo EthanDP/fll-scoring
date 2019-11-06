@@ -1,32 +1,36 @@
-var loc = window.location;
+var socket = null;
+var score = 0;
 
-var wsStart = 'ws://'
-if (loc.protocol == 'https:'){
-    wsStart = 'wss://';
-}
+function startSocket() {
+    var loc = window.location;
 
-var endpoint = wsStart + window.location.host + '/match';
-var socket = new WebSocket(endpoint);
-console.log(endpoint);
-
-socket.onmessage = function(e){
-    console.log("score update", e);
-    var score = document.querySelector('#score-value').innerHTML;
-    //var team = document.querySelector('#selected-team').innerHTML;
-    if (data = 'score request') {
-        socket.send(JSON.stringify({
-            'message': 'red ' + score
-        }))
+    var wsStart = 'ws://'
+    if (loc.protocol == 'https:'){
+        wsStart = 'wss://';
     }
-}
-socket.onopen = function(e){
-    console.log("open", e);
-}
-socket.onerror = function(e){
-    console.log("error", e);
-}
-socket.onclose = function(e){
-    console.log("close", e);
+
+    var endpoint = wsStart + window.location.host + '/match';
+    socket = new WebSocket(endpoint);
+    console.log(endpoint);
+
+    socket.onmessage = function(e){
+        console.log("score update", e);
+        data = e.data;
+        //var team = document.querySelector('#selected-team').innerHTML;
+        if (data == 'score request') {
+            updateScore();
+        }
+    }
+    socket.onopen = function(e){
+        console.log("open", e);
+        updateScore();
+    }
+    socket.onerror = function(e){
+        console.log("error", e);
+    }
+    socket.onclose = function(e){
+        console.log("close", e);
+    }
 }
 
 function defaultCheckBoxes() {
@@ -59,14 +63,18 @@ function switchCheckBoxes(boxType, criteriaID, subCategory) {
                 yesBoxes[i].checked = false;
                 noBox = document.querySelectorAll('[criteria-id="' + yesBoxID.toString() + '"][name="checkNo"]')[0];
                 noBox.checked = true;
+
             }
         }
         opposite = "checkNo";
         otherOpposite = "checkYes";
+        score += parseInt(currentBox.getAttribute('point-value'))
+        console.log("New score: ", score)
 
     } else {
         opposite = "checkYes";
         otherOpposite = "checkNo";
+        score -= parseInt(currentBox.getAttribute('point-value'))
     }
 
     criteriaBoxes = document.querySelectorAll('[name="' + opposite + '"][sub-category="' + subCategory.toString() + '"]'); // Grab the other checkbox...
@@ -78,6 +86,9 @@ function switchCheckBoxes(boxType, criteriaID, subCategory) {
             criteriaBoxes[i].checked = true;
         }
     }
+
+    document.querySelector('#score-value').innerHTML = score;
+    updateScore();
 }
 
 function switchCheckBoxStatus() {
@@ -89,9 +100,15 @@ function buttonPress() {
 }
 
 function updateScore() {
-    var score = document.querySelector('#score-value').innerHTML;
-    //var team = document.querySelector('#selected-team').value;
+    var team = document.querySelector('#team-selector').value;
+    var message = '';
+    if (team == 'red') {
+        message = 'r' + score;
+    } else {
+        message = 'b' + score;
+    }
+    console.log(message);
     socket.send(JSON.stringify({
-        'message': 'red ' + score
+        'message': message
     }))
 }

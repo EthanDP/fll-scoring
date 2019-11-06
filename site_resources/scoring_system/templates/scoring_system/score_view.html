@@ -4,14 +4,23 @@
 {% block head %}
     <title>Match Score</title>
     <meta charset="utf-8"/>
+    <link rel="stylesheet" href="{% static 'scoring_system/css/score_view.css' %}">
 {% endblock %}
 
 {% block content %}
     <h1>Live Score View</h1>
+    <div class="score-div">
+        <table>
+            <tr>
+                <th class="red-header">
+                    <h1 id="red-score">0</h1>
+                </th>
+                <th class="blue-header">
+                    <h1 id="blue-score">0</h1>
+                </th>
+            </tr>
+        </table>
+    </div>
     <h3 id="connection-status"></h3>
-    <h1 id="red-score">No Current Match</h1>
-    <h1 id="blue-score">0</h1>
-    <input type="button" id="test-button" value="Yee" style="padding: 50px 50px;">
-    <input type="button" id="test-button2" value="Haw" style="padding: 50px 50px;">
     <script type="text/javascript" src="{% static 'scoring_system/js/scoreview.js' %}"></script>
 {% endblock %}

@@ -18,12 +18,12 @@ class ScoreConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        print("receive ", event)
+        print("Receive: ", event)
         data = event.get('text', None)
-        print(data)
         if data:
             loaded_data = json.loads(data)
-            if loaded_data['message'] == 'connected':
+            if loaded_data['message'] == 'user connected':
+                print("Hey")
                 await self.channel_layer.group_send(
                     "match_view",
                     {

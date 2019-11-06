@@ -12,41 +12,25 @@ console.log(endpoint);
 socket.onmessage = function(e){
     console.log("Got websocket message " + e.data);
     var data = e.data;
-    if (data == 'connected') {
+    if (data == 'user connected') {
         document.querySelector('#connection-status').innerHTML = "User Connected";
-    } else if (data.includes('red')) {
-        document.querySelector('#red-score').innerHTML = data;
-    } else if (data.includes('blue')) {
-        document.querySelector('#blue-score').innerHTML = data;
+    } else if (data[0] == 'r') {
+        document.querySelector('#red-score').innerHTML = data.slice(1);
+    } else if (data[0] == 'b') {
+        document.querySelector('#blue-score').innerHTML = data.slice(1);
     }
 }
 
 socket.onopen = function(e){
     console.log("User Connected");-
     socket.send(JSON.stringify({
-        'message': "connected"
+        'message': "user connected"
     }));
 }
 socket.onerror = function(e){
     console.log('error', e);
 }
 socket.onclose = function(e){
+    document.querySelector('#connection-status').innerHTML = "Disconnected"
     console.log('close', e);
-}
-
-document.querySelector('#test-button').onclick = function(e) {
-    var message = "Yee";
-    console.log("Help");
-    socket.send(JSON.stringify({
-        'team': 'red',
-        'message': message
-    }))
-}
-
-document.querySelector('#test-button2').onclick = function(e) {
-    var message = "Haw";
-    console.log("Help");
-    socket.send(JSON.stringify({
-        'message': message
-    }))
 }

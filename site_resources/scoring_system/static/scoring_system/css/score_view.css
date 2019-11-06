@@ -1,0 +1,16 @@
+.score-div {
+    margin: auto;
+    align-content: center;
+}
+
+.red-header {
+    width: 10%;
+    background-color: red;
+    text-align: center;
+}
+
+.blue-header {
+    width: 10%;
+    background-color: blue;
+    text-align: center;
+}
