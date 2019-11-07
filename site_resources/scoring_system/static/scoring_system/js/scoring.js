@@ -46,17 +46,13 @@ function defaultCheckBoxes() {
 
 function switchCheckBoxes(boxType, criteriaID, subCategory) {
     opposite = null
-    otherOpposite = null
     currentBox = document.querySelectorAll('[criteria-id="' + criteriaID.toString() + '"][name="' + boxType + '"][sub-category="' + subCategory.toString() + '"]')[0]; // Get the checkbox that was just clicked
-    console.log(criteriaID);
     if (currentBox.checked == false) { // Don't allow boxes to be turned off by clicking them
         currentBox.checked = true;
         return;
     }
     if (boxType == "checkYes") { // Find out which boxes may need to be turned off
         yesBoxes = document.querySelectorAll('[sub-category="' + subCategory.toString() + '"][name="' + boxType + '"]');
-        console.log(yesBoxes);
-        console.log("subCategory: " + subCategory);
         for (i = 0; i < yesBoxes.length; i++) { // 	(｡◕‿‿◕｡)
             yesBoxID = yesBoxes[i].getAttribute("criteria-id")
             if (yesBoxID != criteriaID) {
@@ -67,23 +63,22 @@ function switchCheckBoxes(boxType, criteriaID, subCategory) {
             }
         }
         opposite = "checkNo";
-        otherOpposite = "checkYes";
         score += parseInt(currentBox.getAttribute('point-value'))
         console.log("New score: ", score)
 
     } else {
         opposite = "checkYes";
-        otherOpposite = "checkNo";
         score -= parseInt(currentBox.getAttribute('point-value'))
     }
 
-    criteriaBoxes = document.querySelectorAll('[name="' + opposite + '"][sub-category="' + subCategory.toString() + '"]'); // Grab the other checkbox...
-    oppositeBoxes = document.querySelectorAll('[name="' + otherOpposite + '"][sub-category="' + subCategory.toString() + '"]');
-    for (i = 0; i <criteriaBoxes.length; i++) {
-        criteriaBoxes[i].checked = false; // And turn the state to false
-        if (criteriaBoxes[i].getAttribute("criteria-id") != criteriaID && opposite != "checkYes") {
-            console.log("EJEJEJEJ");
-            criteriaBoxes[i].checked = true;
+    oppositeBoxes = document.querySelectorAll('[name="' + opposite + '"][sub-category="' + subCategory.toString() + '"]'); // Grab the other checkbox...
+    currentBoxes = document.querySelectorAll('[name="' + boxType + '"][sub-category="' + subCategory.toString() + '"]');
+    for (i = 0; i < oppositeBoxes.length; i++) {
+        oppositeBoxes[i].checked = false; // And turn the state to false
+        if (oppositeBoxes[i].getAttribute("criteria-id") != criteriaID && opposite != "checkYes") {
+            console.log("Box clicked: ", boxType, " subCategory: ", subCategory);
+            oppositeBoxes[i].checked = true;
+            score -= oppositeBoxes[i].getAttribute('point-value');
         }
     }
 
