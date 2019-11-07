@@ -44,50 +44,60 @@ function defaultCheckBoxes() {
     }
 }
 
-function switchCheckBoxes(boxType, criteriaID, subCategory) {
-    opposite = null
-    currentBox = document.querySelectorAll('[criteria-id="' + criteriaID.toString() + '"][name="' + boxType + '"][sub-category="' + subCategory.toString() + '"]')[0]; // Get the checkbox that was just clicked
-    if (currentBox.checked == false) { // Don't allow boxes to be turned off by clicking them
-        currentBox.checked = true;
+function switchCheckBoxes(selectedBox) {
+    if (selectedBox.checked == false) { // Don't allow boxes to be turned off by clicking them
+        selectedBox.checked = true;
         return;
     }
-    if (boxType == "checkYes") { // Find out which boxes may need to be turned off
-        yesBoxes = document.querySelectorAll('[sub-category="' + subCategory.toString() + '"][name="' + boxType + '"]');
-        for (i = 0; i < yesBoxes.length; i++) { // 	(｡◕‿‿◕｡)
-            yesBoxID = yesBoxes[i].getAttribute("criteria-id")
-            if (yesBoxID != criteriaID) {
-                yesBoxes[i].checked = false;
-                noBox = document.querySelectorAll('[criteria-id="' + yesBoxID.toString() + '"][name="checkNo"]')[0];
-                noBox.checked = true;
 
-            }
-        }
-        opposite = "checkNo";
-        score += parseInt(currentBox.getAttribute('point-value'))
-        console.log("New score: ", score)
+    boxType = selectedBox.name;
+    oppositeType = null;
+    subCategory = selectedBox.getAttribute('sub-category');
+    criteriaID = selectedBox.getAttribute('criteria-id');
 
+    if (boxType == 'checkYes') {
+        oppositeType = 'checkNo';
     } else {
-        opposite = "checkYes";
-        score -= parseInt(currentBox.getAttribute('point-value'))
+        oppositeType = 'checkYes';
     }
 
-    oppositeBoxes = document.querySelectorAll('[name="' + opposite + '"][sub-category="' + subCategory.toString() + '"]'); // Grab the other checkbox...
-    currentBoxes = document.querySelectorAll('[name="' + boxType + '"][sub-category="' + subCategory.toString() + '"]');
-    for (i = 0; i < oppositeBoxes.length; i++) {
-        oppositeBoxes[i].checked = false; // And turn the state to false
-        if (oppositeBoxes[i].getAttribute("criteria-id") != criteriaID && opposite != "checkYes") {
-            console.log("Box clicked: ", boxType, " subCategory: ", subCategory);
-            oppositeBoxes[i].checked = true;
-            score -= oppositeBoxes[i].getAttribute('point-value');
+    subCategoryBoxes = document.querySelectorAll('[name="' + boxType + '"][sub-category="' + subCategory.toString() + '"]')
+    oppositeSubCategoryBoxes = document.querySelectorAll('[name="' + oppositeType + '"][sub-category="' + subCategory.toString() + '"]')
+    oppositeBox = null
+
+    for (i = 0; i < oppositeSubCategoryBoxes.length; i++) {
+        currentBox = oppositeSubCategoryBoxes[i];
+        if (currentBox.getAttribute('criteria-id') == criteriaID) {
+            oppositeBox = currentBox;
         }
+    }
+    // 	(｡◕‿‿◕｡)
+    if (boxType == 'checkYes') {
+        for (i = 0; i < subCategoryBoxes.length; i++) {
+            currentBox = subCategoryBoxes[i];
+            if (currentBox.checked == true && currentBox.getAttribute('criteria-id') != criteriaID) {
+                console.log("bruh moment")
+                score -= parseInt(currentBox.getAttribute('point-value'));
+            }
+            currentBox.checked = false;
+            oppositeSubCategoryBoxes[i].checked = true;
+        }
+        selectedBox.checked = true;
+        oppositeBox.checked = false;
+        score += parseInt(currentBox.getAttribute('point-value'));
+    } else {
+        for (i = 0; i < oppositeSubCategoryBoxes.length; i++) {
+            currentBox = oppositeSubCategoryBoxes[i];
+            if (currentBox.getAttribute('criteria-id') == criteriaID) {
+                currentBox.checked = false;
+            }
+        }
+        selectedBox.checked = true;
+        score -= parseInt(currentBox.getAttribute('point-value'));
     }
 
     document.querySelector('#score-value').innerHTML = score;
     updateScore();
-}
-
-function switchCheckBoxStatus() {
-    console.log("Hey");
 }
 
 function buttonPress() {

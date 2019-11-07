@@ -165,3 +165,20 @@
   from {transform: scale(0)} 
   to {transform: scale(1)}
 }
+
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  height: 100px;
+  background-color: steelblue;
+  align-content: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.sticky-table {
+  align-content: center;
+  text-align: center;
+  margin: 0 auto;
+}
