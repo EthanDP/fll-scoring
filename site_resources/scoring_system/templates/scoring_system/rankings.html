@@ -6,4 +6,15 @@
 
 {% block content %}
     <h1>Ranking page</h1>
+    <table>
+        {% for team in teams %}
+            <tr>
+                <th>{{ team.name }}</th>
+                <th>{{ team.number }}</th>
+                <th>{{ team.match1 }}</th>
+                <th>{{ team.match2 }}</th>
+                <th>{{ team.match3 }}</th>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

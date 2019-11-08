@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.team_rankings),
     path('match', views.match),
     path('scoring', views.scoring),
+    # path('scoring', views.score_new, name='score_new'),
 ]
 
 if settings.DEBUG: # new

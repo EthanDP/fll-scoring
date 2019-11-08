@@ -5,6 +5,7 @@
     <title>Match Score</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" href="{% static 'scoring_system/css/score_view.css' %}">
+    <script type="text/javascript" src="{% static 'scoring_system/js/scoreview.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -22,5 +23,16 @@
         </table>
     </div>
     <h3 id="connection-status"></h3>
-    <script type="text/javascript" src="{% static 'scoring_system/js/scoreview.js' %}"></script>
+    <div class="timer">
+        <span class="minute">00</span>:<span class="second">10</span>
+    </div>
+    <div class="control">
+      <button onClick="timer.start(1000)">Start</button> 
+      <button onClick="timer.stop()">Stop</button> 
+      <button onClick="timer.reset(150)">Reset</button> 
+    </div>
+    <script>
+        setURL("{% static 'scoring_system/audio/buzzer.mp3' %}");
+        startSocket();
+    </script>
 {% endblock %}

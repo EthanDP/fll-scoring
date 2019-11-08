@@ -1,5 +1,6 @@
 var socket = null;
 var score = 0;
+var buzzer;
 
 function startSocket() {
     var loc = window.location;
@@ -42,6 +43,13 @@ function defaultCheckBoxes() {
     for (i = 0; i < yesBoxes.length; i++) {
         yesBoxes[i].checked = false;
     }
+    precisionUpdate(document.getElementById('precision-select'), true);
+    selectBoxes = document.querySelectorAll('#default-select');
+    console.log("BRUJ")
+    console.log("YOOOOO", selectBoxes.length);
+    for (i = 0; i < selectBoxes.length; i++) {
+        selectUpdate(selectBoxes[i], true);
+    }
 }
 
 function switchCheckBoxes(selectedBox) {
@@ -75,6 +83,7 @@ function switchCheckBoxes(selectedBox) {
     if (boxType == 'checkYes') {
         for (i = 0; i < subCategoryBoxes.length; i++) {
             currentBox = subCategoryBoxes[i];
+            console.log(i)
             if (currentBox.checked == true && currentBox.getAttribute('criteria-id') != criteriaID) {
                 console.log("bruh moment")
                 score -= parseInt(currentBox.getAttribute('point-value'));
@@ -84,7 +93,7 @@ function switchCheckBoxes(selectedBox) {
         }
         selectedBox.checked = true;
         oppositeBox.checked = false;
-        score += parseInt(currentBox.getAttribute('point-value'));
+        score += parseInt(selectedBox.getAttribute('point-value'));
     } else {
         for (i = 0; i < oppositeSubCategoryBoxes.length; i++) {
             currentBox = oppositeSubCategoryBoxes[i];
@@ -93,18 +102,83 @@ function switchCheckBoxes(selectedBox) {
             }
         }
         selectedBox.checked = true;
-        score -= parseInt(currentBox.getAttribute('point-value'));
+        score -= parseInt(selectedBox.getAttribute('point-value'));
     }
 
-    document.querySelector('#score-value').innerHTML = score;
     updateScore();
 }
 
-function buttonPress() {
-    updateScore()
+function selectUpdate(select, defaulting=false) {
+    var oldValue = parseInt(select.getAttribute('old-value'));
+    var newValue;
+    var pointValue = parseInt(select.getAttribute('point-value'));
+    if (defaulting) {
+        console.log("HEY");
+        newValue = oldValue;
+        select.selectedIndex = newValue;
+    } else {
+        newValue = parseInt(select.options[select.selectedIndex].value)
+        score -= oldValue * pointValue;
+    }
+    console.log("Subtracting: ", oldValue)
+    console.log("Adding ", newValue)
+    score += newValue * pointValue;
+    select.setAttribute('old-value', newValue)
+    if (defaulting) {
+        updateScore(true)
+    } else {
+        updateScore();
+    }
 }
 
-function updateScore() {
+function precisionUpdate(select, defaulting=false) {
+    var oldValue = parseInt(select.getAttribute("old-value"));
+    var newValue;
+    if (defaulting) {
+        console.log("Hfjdklsjkl")
+        newValue = 6;
+        select.selectedIndex = 6;
+    } else {
+        newValue = parseInt(select.options[select.selectedIndex].value);
+        if (oldValue <= 2) {
+            score -= oldValue * 5;
+        } else if (oldValue == 3) {
+            score -= 20;
+        } else if (oldValue == 4) {
+            score -= 30;
+        } else if (oldValue == 5) {
+            score -= 45;
+        } else {
+            score -= 60;
+        }
+    }
+
+    if (newValue <= 2) {
+        score += newValue * 5;
+    } else if (newValue == 3) {
+        score += 20;
+    } else if (newValue == 4) {
+        score += 30;
+    } else if (newValue == 5) {
+        score += 45;
+    } else {
+        score += 60;
+    }
+
+    select.setAttribute('old-value', newValue)
+    console.log("BEFORE BRUH")
+    if (defaulting) {
+        updateScore(true)
+    } else {
+        updateScore();
+    }
+}
+
+function updateScore(defaulting = false) {
+    document.querySelector('#score-value').innerHTML = score;
+    if (defaulting) {
+        return;
+    }
     var team = document.querySelector('#team-selector').value;
     var message = '';
     if (team == 'red') {
@@ -117,3 +191,118 @@ function updateScore() {
         'message': message
     }))
 }
+
+function _timer(callback)
+{
+    var time = 1;     //  The default time of the timer
+    var mode = 1;     //    Mode: count up or count down
+    var status = 0;    //    Status: timer is running or stoped
+    var timer_id;    //    This is used by setInterval function
+    
+    // this will start the timer ex. start the timer with 1 second interval timer.start(1000) 
+    this.start = function(interval)
+    {
+        interval = (typeof(interval) !== 'undefined') ? interval : 1000;
+ 
+        if(status == 0)
+        {
+            status = 1;
+            timer_id = setInterval(function()
+            {
+                switch(mode)
+                {
+                    default:
+                    if(time)
+                    {
+                        time--;
+                        generateTime();
+                        if(typeof(callback) === 'function') callback(time);
+                    }
+                    break;
+                    
+                    case 1:
+                    if(time < 86400)
+                    {
+                        time++;
+                        generateTime();
+                        if(typeof(callback) === 'function') callback(time);
+                    }
+                    break;
+                }
+            }, interval);
+        }
+    }
+    
+    //  Same as the name, this will stop or pause the timer ex. timer.stop()
+    this.stop =  function()
+    {
+        if(status == 1)
+        {
+            status = 0;
+            clearInterval(timer_id);
+        }
+    }
+    
+    // Reset the timer to zero or reset it to your own custom time ex. reset to zero second timer.reset(0)
+    this.reset =  function(sec)
+    {
+        sec = (typeof(sec) !== 'undefined') ? sec : 0;
+        time = sec;
+        generateTime(time);
+    }
+    
+    // Change the mode of the timer, count-up (1) or countdown (0)
+    this.mode = function(tmode)
+    {
+        mode = tmode;
+    }
+    
+    // This methode return the current value of the timer
+    this.getTime = function()
+    {
+        return time;
+    }
+    
+    // This methode return the current mode of the timer count-up (1) or countdown (0)
+    this.getMode = function()
+    {
+        return mode;
+    }
+    
+    // This methode return the status of the timer running (1) or stoped (1)
+    this.getStatus
+    {
+        return status;
+    }
+    
+    // This methode will render the time variable to hour:minute:second format
+    function generateTime()
+    {
+        var second = time % 60;
+        var minute = Math.floor(time / 60) % 60;
+        
+        second = (second < 10) ? '0'+second : second;
+        minute = (minute < 10) ? '0'+minute : minute;
+        
+        $('div.timer span.second').html(second);
+        $('div.timer span.minute').html(minute);
+    }
+}
+ 
+// example use
+var timer;
+$(document).ready(function(e) 
+{
+    timer = new _timer
+    (
+        function(time)
+        {
+            if(time == 0)
+            {
+                timer.stop();
+            }
+        }
+    );
+    timer.reset(0);
+    timer.mode(0);
+});

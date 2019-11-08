@@ -1,11 +1,11 @@
 {% extends 'scoring_system/base.html' %}
 {% load static %}
+{% load range %}
 
 {% block head %}
     <title>Scoring System</title>
     <link rel="stylesheet" href="{% static 'scoring_system/css/scoring.css' %}">
     <script type="text/javascript" src="{% static 'scoring_system/js/scoring.js' %}"></script>
-    <script type="text/javascript" src="{% static 'scoring_system/js/jquery-3.4.1.min.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -13,6 +13,16 @@
     <select id="team-selector">
         <option value="red">Red</option>
         <option value="blue">Blue</option>
+    </select>
+    <select name="team-choice">
+    {% for team in teams %}
+        <option value="{{ team.name }}">{{ team.name }}</option>
+    {% endfor %}
+    </select>
+    <select>
+        <option value="match1">First Match</option>
+        <option value="match2">Second Match</option>
+        <option value="match3">Third Match</option>
     </select>
     {% for category in scoring_categories %}
         <div class="scoring-parent">
@@ -44,26 +54,21 @@
                             </td>
                         {% elif criteria.score_type == "i" %}
                             <td>
-                                <input type="number" class="int-input" name="intInput" style="width: 100px;height: 30px" min="0" >
-                            </td>
-                        {% elif criteria.score_type == "t" %}
-                            <td>
-                                <label class="container">{{ criteria.t_option1 }}
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                            <td>
-                                <label class="container">{{ criteria.t_option2 }}
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                            <td>
-                                <label class="container">{{ criteria.t_option3 }}
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
+                                {% if criteria.sub_category == "n1" %}
+                                    <select id="precision-select" onchange="precisionUpdate(this)" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
+                                        <option value="0">0</option>
+                                        {% for i in criteria.max_input|range %}
+                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                    <select id="default-select" onchange="selectUpdate(this)" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
+                                        <option value="0">0</option>
+                                        {% for i in criteria.max_input|range %}
+                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
                             </td>
                         {% else %}
                             <p>Something went wrong</p>
@@ -80,13 +85,29 @@
         <table class="sticky-table">
             <tr>
                 <th>Score:</th>
-                <th id="score-value">0</th>
-                <th>Timer Here</th>
+                <th name="final-score" id="score-value">0</th>
+                <th>
+                    <div class="timer">
+                        <span class="minute">00</span>:<span class="second">10</span>
+                    </div>
+                </th>
+                <th>
+                </th>
             </tr>
         </table>
     </div>
     <script>
-        defaultCheckBoxes();
-        startSocket();
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function startRoutine() {
+            startSocket();
+            defaultCheckBoxes();
+            await sleep(5000);
+            updateScore();
+        }
+
+        startRoutine();
     </script>
 {% endblock %}
