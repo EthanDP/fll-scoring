@@ -182,3 +182,12 @@
   text-align: center;
   margin: 0 auto;
 }
+
+.score-submit, .name-submit, .match-submit {
+  visibility: hidden;
+}
+
+.submit-button {
+  width: 100px;
+  height: 50px;
+}

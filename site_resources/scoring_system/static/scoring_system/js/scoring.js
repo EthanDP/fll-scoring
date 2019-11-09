@@ -192,6 +192,18 @@ function updateScore(defaulting = false) {
     }))
 }
 
+function submitScore() {
+    scoreInput = document.getElementsByName('score-submit')[0];
+    teamName = document.getElementsByName('name-submit')[0];
+    matchChoice = document.getElementsByName('match-submit')[0];
+    scoreInput.value = score;
+    nameOption = document.getElementsByName('team-choice')[0]
+    teamName.value = nameOption.options[nameOption.selectedIndex].value;
+    matchOption = document.getElementById('match-choice')
+    matchChoice.value = matchOption.options[matchOption.selectedIndex].value;
+    document.getElementById('score-form').submit();
+}
+
 function _timer(callback)
 {
     var time = 1;     //  The default time of the timer

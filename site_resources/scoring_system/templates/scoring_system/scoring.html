@@ -19,7 +19,7 @@
         <option value="{{ team.name }}">{{ team.name }}</option>
     {% endfor %}
     </select>
-    <select>
+    <select id="match-choice">
         <option value="match1">First Match</option>
         <option value="match2">Second Match</option>
         <option value="match3">Third Match</option>
@@ -81,6 +81,13 @@
         </div>
         </div>
     {% endfor %}
+    <form id="score-form" action="submit_score" method="POST">
+        {% csrf_token %}
+        <input type="text" name="score-submit" class="score-submit">
+        <input type="text" name="name-submit" class="name-submit">
+        <input type="text" name="match-submit" class="match-submit">
+    </form>
+    <input type="button" class="submit-button" value="Submit Final Score" onclick="submitScore()">
     <div class="sticky">
         <table class="sticky-table">
             <tr>
