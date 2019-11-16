@@ -1,0 +1,15 @@
+.rankings {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.th {
+    text-align: center;
+    padding: 15px;
+    text-align: left;
+}
+
+.name-header {
+    height: 50px;
+}

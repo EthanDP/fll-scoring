@@ -191,3 +191,7 @@
   width: 100px;
   height: 50px;
 }
+
+#timer-text {
+  font-family: Impact;
+}

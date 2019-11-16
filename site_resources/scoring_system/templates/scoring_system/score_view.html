@@ -11,12 +11,25 @@
 {% block content %}
     <h1>Live Score View</h1>
     <div class="score-div">
-        <table>
+        <table class="team-table">
+            <tr class="team-header">
+                <th class="red-name">
+                    Red Team
+                </th>
+                <th class="vs">
+                    vs.
+                </th>
+                <th class="blue-name">
+                    Blue Team
+                </th>
+            </tr>
+        </table>
+        <table class="score-table">
             <tr>
                 <th class="red-header">
                     <h1 id="red-score">0</h1>
                 </th>
-                <th>
+                <th class="timer-header">
                     <div class="timer">
                         <span class="minute">02</span>:<span class="second">30</span>
                     </div>

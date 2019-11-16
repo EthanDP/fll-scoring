@@ -1,23 +1,45 @@
 .score-div {
-    margin: auto;
-    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.team-table, .score-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    text-align: center;
+}
+
+.red-name, .blue-name{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 40px;
+    width: 35%;
+}
+
+.vs {
+    font-size: 35px;
 }
 
 .red-header {
-    width: 10%;
+    width: 35%;
     background-color: #ed1c24;
     text-align: center;
 }
 
 .blue-header {
-    width: 10%;
+    width: 35%;
     background-color: #0066b3;
     text-align: center;
+}
+
+.timer-header {
+    width: 200px;
 }
 
 #blue-score, #red-score {
     color: white;
     font-family: Helvetica;
+    font-size: 50px;
     text-shadow: 
     -1px -1px 0 #000,
     1px -1px 0 #000,
@@ -26,12 +48,12 @@
 }
 
 div.timer {
-    border:1px #666666 solid;
-    width:140px;
-    height:50px;
-    line-height:50px;
-    font-size:36px;
-    font-family:"Courier New", Courier, monospace;
+    width:200px;
+    height:100px;
+    line-height:90px;
+    font-size:50px;
+    font-family: Roboto, Verdana, Geneva, Tahoma, sans-serif;
     text-align:center;
-    margin:5px;
+    margin-left: auto;
+    margin-right: auto;
 }

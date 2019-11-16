@@ -1,19 +1,28 @@
 {% extends 'scoring_system/base.html' %}
+{% load static %}
 
 {% block head %}
     <title>Event Rankings</title>
+    <link rel="stylesheet" href="{% static 'scoring_system/css/rankings.css' %}">
 {% endblock %}
 
 {% block content %}
     <h1>Ranking page</h1>
-    <table>
+    <table class="rankings">
+            <tr>
+                <th class="name-header">Team Name</th>
+                <th class="no-header">#</th>
+                <th class="match-header">Match 1</th>
+                <th class="match-header">Match 2</th>
+                <th class="match-header">Match 3</th>
+            </tr>
         {% for team in teams %}
             <tr>
-                <th>{{ team.name }}</th>
-                <th>{{ team.number }}</th>
-                <th class="score">{{ team.match1 }}</th>
-                <th class="score">{{ team.match2 }}</th>
-                <th class="score">{{ team.match3 }}</th>
+                <td>{{ team.name }}</td>
+                <td>{{ team.number }}</td>
+                <td class="score">{{ team.match1 }}</td>
+                <td class="score">{{ team.match2 }}</td>
+                <td class="score">{{ team.match3 }}</td>
             </tr>
         {% endfor %}
     </table>

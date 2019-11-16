@@ -1,22 +1,47 @@
-.navbar {
-    min-height: 10%;
-}
-  
-.navbar-brand {
-  padding: 0 15px;
-  height: 80px;
-  line-height: 80px;
-}
-  
-.navbar-toggle {
-  margin-top: 23px;
-  padding: 9px 10px !important;
-}
-  
 @media (min-width: 768px) {
   .navbar-nav > li > a {
     padding-top: 26.5px;
     padding-bottom: 26.5px;
     line-height: 27px;
+  }
+
+  .navbar {
+    min-height: 80px;
+  }
+
+  .navbar-toggle {
+    margin-top: 23px;
+    padding: 9px 10px !important;
+  }
+
+  .navbar-brand {
+    padding: 0 15px;
+    height: 80px;
+    line-height: 80px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  body {
+    background-color: lightblue;
+  }
+
+  .navbar {
+    min-height: 150px;
+  }
+
+  .navbar-toggle {
+    margin-top: 23px;
+    padding: 9px 10px !important;
+  }
+
+  .navbar-toggler-icon {
+    padding: 50px !important;
+  }
+
+  .navbar-brand {
+    padding: 0 30px;
+    height: 160px;
+    line-height: 160px;
   }
 }
