@@ -1,19 +1,14 @@
-.scoring-category {
-    display: inline-block;
+.scoring-parent, .scoring-category, .scoring-table {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.scoring-parent {
+.scoring-table {
   text-align: center;
 }
-
 .category-header {
   font-weight: bold;
   colspan: "2";
-  text-align: center;
-}
-
-.image-cell {
-  
 }
 
 .category-image {
@@ -194,4 +189,5 @@
 
 #timer-text {
   font-family: Impact;
+  text-align: center;
 }

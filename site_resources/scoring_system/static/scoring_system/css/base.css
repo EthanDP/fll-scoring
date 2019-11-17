@@ -1,4 +1,4 @@
-@media (min-width: 768px) {
+@media (orientation: landscape) {
   .navbar-nav > li > a {
     padding-top: 26.5px;
     padding-bottom: 26.5px;
@@ -21,11 +21,7 @@
   }
 }
 
-@media only screen and (max-width: 1200px) {
-  body {
-    background-color: lightblue;
-  }
-
+@media only screen and (orientation: portrait) {
   .navbar {
     min-height: 150px;
   }
@@ -43,5 +39,13 @@
     padding: 0 30px;
     height: 160px;
     line-height: 160px;
+  }
+
+  .brand-image {
+    height: 55px;
+  }
+
+  .nav-link {
+    font-size: 35px;
   }
 }

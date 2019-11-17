@@ -27,9 +27,9 @@
     {% for category in scoring_categories %}
         <div class="scoring-parent">
         <div class="scoring-category">
-            <table>
-                <tr class="category-header">
-                    {{ category.category_name }}
+            <table class="scoring-table">
+                <tr>
+                    <th class="category-header">{{ category.category_name }}</th>
                 </tr>
                 <th class="image-cell" rowspan="0">
                     <img class="category-image" src="{{ category.category_image.url }}">
