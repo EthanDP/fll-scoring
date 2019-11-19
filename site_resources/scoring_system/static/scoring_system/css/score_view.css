@@ -38,6 +38,34 @@
     text-align: center;
 }
 
+#blue-score, #red-score {
+    color: white;
+    font-family: Helvetica;
+    font-size: 60px;
+    text-shadow: 
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+
+.connection-footer {
+    position: absolute;
+    bottom: 0;
+    width: 95%;
+    margin-left: .3%;
+}
+
+div.timer {
+    width:200px;
+    height:100px;
+    line-height:90px;
+    font-size:50px;
+    font-family: Roboto, Verdana, Geneva, Tahoma, sans-serif;
+    text-align:center;
+    margin-left: auto;
+    margin-right: auto;
+}
 @media only screen and (orientation: portrait) {
     .team-table, .score-table {
         width: 96%;
@@ -60,14 +88,7 @@
     }
 
     #blue-score, #red-score {
-        color: white;
-        font-family: Helvetica;
         font-size: 50px;
-        text-shadow: 
-        -1px -1px 0 #000,
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000;
     }
 
     div.timer {
@@ -75,9 +96,5 @@
         height:100px;
         line-height:90px;
         font-size:50px;
-        font-family: Roboto, Verdana, Geneva, Tahoma, sans-serif;
-        text-align:center;
-        margin-left: auto;
-        margin-right: auto;
     }
 }
