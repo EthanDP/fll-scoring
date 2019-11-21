@@ -1,4 +1,4 @@
-.scoring-parent, .scoring-category, .scoring-table {
+.scoring-category, .scoring-table {
   margin-left: auto;
   margin-right: auto;
 }
@@ -173,9 +173,9 @@
 }
 
 .sticky-table {
-  align-content: center;
   text-align: center;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .score-submit, .name-submit, .match-submit {
@@ -187,7 +187,7 @@
   height: 50px;
 }
 
-#timer-text {
-  font-family: Impact;
+#score-indicator, #score-value, #timer-text {
   text-align: center;
+  font-size: 50px;
 }

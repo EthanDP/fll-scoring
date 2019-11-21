@@ -1,13 +1,17 @@
 var socket = null;
 var audio_url = null;
+var timer;
 
+// Sets the url of the buzzer sound effect
 function setURL(url) {
     audio_url = url;
 }
 
+// Initializes the socket variable and handles events
 function startSocket() {
     var loc = window.location;
 
+    // Changes endpoint url if using a secure web socket (Production)
     var wsStart = 'ws://'
     if (loc.protocol == 'https:'){
         wsStart = 'wss://';
@@ -15,13 +19,28 @@ function startSocket() {
 
     var endpoint = wsStart + window.location.host + loc.pathname;
     socket = new WebSocket(endpoint);
-    console.log(endpoint);
 
     socket.onmessage = function(e){
         console.log("Got websocket message " + e.data);
         var data = e.data;
+
+        /* Messages and their meanings
+            'user connected': User has successfully been connected to the web socket
+            'start match': Resets and starts timer
+            'end match': Stops timer
+            'clear': Match has ended and preparation has begun for the next
+            'r#': Score update for the red team (# is the point value)
+            'b#': Score update for the blue team 
+        */
+
         if (data == 'user connected') {
             document.querySelector('#connection-status').innerHTML = "User Connected";
+        } else if (data == 'start match') {
+            // TODO
+        } else if (data == 'end match') {
+            // TODO
+        } else if (data == 'clear') {
+            // TODO
         } else if (data[0] == 'r') {
             document.querySelector('#red-score').innerHTML = data.slice(1);
         } else if (data[0] == 'b') {
@@ -34,7 +53,9 @@ function startSocket() {
         socket.send(JSON.stringify({
             'message': "user connected"
         }));
+        // Sends a message to the django consumer to verify that the user is connected
     }
+    
     socket.onerror = function(e){
         console.log('error', e);
     }
@@ -140,9 +161,7 @@ function _timer(callback)
         $('div.timer span.minute').html(minute);
     }
 }
- 
-// example use
-var timer;
+
 $(document).ready(function(e) 
 {
     timer = new _timer

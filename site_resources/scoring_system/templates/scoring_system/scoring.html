@@ -2,6 +2,8 @@
 {% load static %}
 {% load range %}
 
+<!-- Anything with brackets and/or percentages is using django's templating language -->
+
 {% block head %}
     <title>Scoring System</title>
     <link rel="stylesheet" href="{% static 'scoring_system/css/scoring.css' %}">
@@ -9,23 +11,27 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Scoring system (event user only)</h1>
+    <!-- TODO: add role selector that keeps content hidden until selected
+         TODO: add connect and start buttons so refs can choose team and match before starting -->
     <select id="team-selector">
         <option value="red">Red</option>
         <option value="blue">Blue</option>
     </select>
+
     <select name="team-choice">
     {% for team in teams %}
         <option value="{{ team.name }}">{{ team.name }}</option>
     {% endfor %}
     </select>
+    
     <select id="match-choice">
         <option value="match1">First Match</option>
         <option value="match2">Second Match</option>
         <option value="match3">Third Match</option>
     </select>
+
+    <!-- Cycles through each category defined within our SQLite database and a django model -->
     {% for category in scoring_categories %}
-        <div class="scoring-parent">
         <div class="scoring-category">
             <table class="scoring-table">
                 <tr>
@@ -79,19 +85,21 @@
                 {% endfor %}
             </table>
         </div>
-        </div>
     {% endfor %}
+
     <form id="score-form" action="submit_score" method="POST">
         {% csrf_token %}
         <input type="text" name="score-submit" class="score-submit">
         <input type="text" name="name-submit" class="name-submit">
         <input type="text" name="match-submit" class="match-submit">
     </form>
-    <input type="button" class="submit-button" value="Submit Final Score" onclick="submitScore()">
+
+    <input type="button" class="submit-button" value="Submit Score" onclick="submitScore()">
+
     <div class="sticky">
         <table class="sticky-table">
             <tr>
-                <th>Score:</th>
+                <th id="score-indicator">Score:</th>
                 <th name="final-score" id="score-value">0</th>
                 <th>
                     <div class="timer" id="timer-text">
@@ -103,11 +111,13 @@
             </tr>
         </table>
     </div>
+
     <script>
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
+        // Waits to update score until sufficient time has been given for the socket to connect
         async function startRoutine() {
             startSocket();
             defaultCheckBoxes();

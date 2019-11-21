@@ -1,7 +1,9 @@
 var socket = null;
 var score = 0;
 var buzzer;
+var timer;
 
+// Initializes the socket variable and handles events
 function startSocket() {
     var loc = window.location;
 
@@ -18,6 +20,7 @@ function startSocket() {
         console.log("score update", e);
         data = e.data;
         //var team = document.querySelector('#selected-team').innerHTML;
+        // Sends current score data if a user connects during a match
         if (data == 'score request') {
             updateScore();
         }
@@ -34,24 +37,29 @@ function startSocket() {
     }
 }
 
+// Defaults all check boxes to the No state
 function defaultCheckBoxes() {
     noBoxes = document.getElementsByName("checkNo")
+    
     for (i = 0; i < noBoxes.length; i++) {
         noBoxes[i].checked = true;
     }
+
     yesBoxes = document.getElementsByName("checkYes")
+
     for (i = 0; i < yesBoxes.length; i++) {
         yesBoxes[i].checked = false;
     }
+
     precisionUpdate(document.getElementById('precision-select'), true);
     selectBoxes = document.querySelectorAll('#default-select');
-    console.log("BRUJ")
-    console.log("YOOOOO", selectBoxes.length);
+
     for (i = 0; i < selectBoxes.length; i++) {
         selectUpdate(selectBoxes[i], true);
     }
 }
 
+// Logic for checkboxes
 function switchCheckBoxes(selectedBox) {
     if (selectedBox.checked == false) { // Don't allow boxes to be turned off by clicking them
         selectedBox.checked = true;
@@ -83,14 +91,15 @@ function switchCheckBoxes(selectedBox) {
     if (boxType == 'checkYes') {
         for (i = 0; i < subCategoryBoxes.length; i++) {
             currentBox = subCategoryBoxes[i];
-            console.log(i)
+
             if (currentBox.checked == true && currentBox.getAttribute('criteria-id') != criteriaID) {
-                console.log("bruh moment")
                 score -= parseInt(currentBox.getAttribute('point-value'));
             }
+
             currentBox.checked = false;
             oppositeSubCategoryBoxes[i].checked = true;
         }
+
         selectedBox.checked = true;
         oppositeBox.checked = false;
         score += parseInt(selectedBox.getAttribute('point-value'));
@@ -108,12 +117,13 @@ function switchCheckBoxes(selectedBox) {
     updateScore();
 }
 
+// Logic for select boxes
 function selectUpdate(select, defaulting=false) {
     var oldValue = parseInt(select.getAttribute('old-value'));
     var newValue;
     var pointValue = parseInt(select.getAttribute('point-value'));
     if (defaulting) {
-        console.log("HEY");
+        console.log("Defaulting select box");
         newValue = oldValue;
         select.selectedIndex = newValue;
     } else {
@@ -131,11 +141,11 @@ function selectUpdate(select, defaulting=false) {
     }
 }
 
+// Logic for precision tokens since they do not have a single score value associated with them
 function precisionUpdate(select, defaulting=false) {
     var oldValue = parseInt(select.getAttribute("old-value"));
     var newValue;
     if (defaulting) {
-        console.log("Hfjdklsjkl")
         newValue = 6;
         select.selectedIndex = 6;
     } else {
@@ -166,7 +176,7 @@ function precisionUpdate(select, defaulting=false) {
     }
 
     select.setAttribute('old-value', newValue)
-    console.log("BEFORE BRUH")
+
     if (defaulting) {
         updateScore(true)
     } else {
@@ -174,6 +184,7 @@ function precisionUpdate(select, defaulting=false) {
     }
 }
 
+// Updates the score on the scoring page and sends a socket message
 function updateScore(defaulting = false) {
     document.querySelector('#score-value').innerHTML = score;
     if (defaulting) {
@@ -192,6 +203,7 @@ function updateScore(defaulting = false) {
     }))
 }
 
+// Submits the score and associated team and match to the views.py file to handle
 function submitScore() {
     scoreInput = document.getElementsByName('score-submit')[0];
     teamName = document.getElementsByName('name-submit')[0];
@@ -203,6 +215,7 @@ function submitScore() {
     matchChoice.value = matchOption.options[matchOption.selectedIndex].value;
     document.getElementById('score-form').submit();
 }
+
 
 function _timer(callback)
 {
@@ -301,8 +314,7 @@ function _timer(callback)
     }
 }
  
-// example use
-var timer;
+
 $(document).ready(function(e) 
 {
     timer = new _timer
