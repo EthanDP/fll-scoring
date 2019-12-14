@@ -5,6 +5,7 @@ var advantageOn = false;
 var buzzer;
 var timer;
 var started = false;
+var currentRole = "none";
 
 // Initializes the socket variable and handles events
 function startSocket(role) {
@@ -37,7 +38,9 @@ function startSocket(role) {
     }
     socket.onopen = function(e){
         console.log("open", e);
-        updateScore();
+        if (currentRole != "starting") {
+            updateScore();
+        }
     }
     socket.onerror = function(e){
         console.log("error", e);
@@ -59,14 +62,17 @@ function roleUpdate(roleSelector) {
     console.log(scoringSelectors)
 
     if (role == "scoring") {
+        currentRole = "scoring";
         startingElements.style.display = "none";
         scoringSelectors.style.display = "block";
         scoringElements.style.display = "none";
     } else if (role == "starting") {
+        currentRole = "starting";
         startingElements.style.display = "block";
         scoringSelectors.style.display = "none";
         scoringElements.style.display = "none";
     } else {
+        currentRole = "none";
         startingElements.style.display = "none";
         scoringSelectors.style.display = "none";
         scoringElements.style.display = "none";

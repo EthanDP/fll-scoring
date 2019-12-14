@@ -1,10 +1,15 @@
 var socket = null;
 var audio_url = null;
+var start_url = null;
 var timer;
 
 // Sets the url of the buzzer sound effect
 function setURL(url) {
     audio_url = url;
+}
+
+function setURL2(url) {
+    start_url = url;
 }
 
 // Initializes the socket variable and handles events
@@ -78,6 +83,9 @@ function _timer(callback)
     // this will start the timer ex. start the timer with 1 second interval timer.start(1000) 
     this.start = function(interval)
     {
+        var start_audio = new Audio(start_url);
+        start_audio.play();
+
         interval = (typeof(interval) !== 'undefined') ? interval : 1000;
         
         if(status == 0)
@@ -156,7 +164,6 @@ function _timer(callback)
     {
         var second = time % 60;
         var minute = Math.floor(time / 60) % 60;
-        var timeCheck = second;
 
         second = (second < 10) ? '0'+second : second;
         minute = (minute < 10) ? '0'+minute : minute;
@@ -164,7 +171,7 @@ function _timer(callback)
         $('div.timer span.second').html(second);
         $('div.timer span.minute').html(minute);
 
-        if (timeCheck == 0) {
+        if (time == 0) {
             var audio = new Audio(audio_url)
             audio.play()
             timer.stop();
