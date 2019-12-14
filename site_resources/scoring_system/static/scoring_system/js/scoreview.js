@@ -79,7 +79,7 @@ function _timer(callback)
     this.start = function(interval)
     {
         interval = (typeof(interval) !== 'undefined') ? interval : 1000;
- 
+        
         if(status == 0)
         {
             status = 1;
@@ -156,12 +156,20 @@ function _timer(callback)
     {
         var second = time % 60;
         var minute = Math.floor(time / 60) % 60;
-        
+        var timeCheck = second;
+
         second = (second < 10) ? '0'+second : second;
         minute = (minute < 10) ? '0'+minute : minute;
-        
+
         $('div.timer span.second').html(second);
         $('div.timer span.minute').html(minute);
+
+        if (timeCheck == 0) {
+            var audio = new Audio(audio_url)
+            audio.play()
+            timer.stop();
+            console.log("Match Ended");
+        }
     }
 }
 
@@ -173,9 +181,7 @@ $(document).ready(function(e)
         {
             if(time == 0)
             {
-                var audio = new Audio(audio_url)
-                audio.play()
-                timer.stop();
+                console.log("Why does this work now?");
             }
         }
     );
