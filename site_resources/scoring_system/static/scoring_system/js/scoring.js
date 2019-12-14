@@ -191,6 +191,11 @@ function selectUpdate(select, defaulting=false) {
     if (defaulting) {
         updateScore(true);
     } else {
+        console.log("Outside bruh moment");
+        if (advantageOn) {
+            updateAdvantage(true);
+            console.log("Bruh moments");
+        }
         updateScore();
     }
 }
@@ -206,9 +211,9 @@ function updateAdvantage(yesAdvantage) {
 
         for (i = 0; i < yesBoxes.length; i++) {
             subCategory = yesBoxes[i].getAttribute('sub-category');
-            if (yesBoxes[i].checked == true && subCategory != 'advantage1' && !subCategories.includes(subCategory)) {
+            if (yesBoxes[i].checked == true && subCategory != 'advantage1' && !subCategories.includes(subCategory.slice(0,1))) {
                 console.log("Successfully found something for advantage so that's cool")
-                subCategories.push(subCategory);
+                subCategories.push(subCategory.slice(0,1));
                 if (subCategory.includes('b')) {
                     advantage += 10;
                 } else {
@@ -219,9 +224,10 @@ function updateAdvantage(yesAdvantage) {
 
         for (i = 0; i < integerInputs.length; i++) {
             subCategory = integerInputs[i].getAttribute('sub-category');
-            if (parseInt(integerInputs[i].options[integerInputs[i].selectedIndex].value) > 0 && !subCategories.includes(subCategory)) {
-                console.log("Successfully found something for advantage so that's cool")
-                subCategories.push(subCategory);
+            console.log("Here is the subcategory" + subCategory);
+            if (parseInt(integerInputs[i].options[integerInputs[i].selectedIndex].value) > 0 && !subCategories.includes(subCategory.slice(0,1))) {
+                console.log("Successfully found something number select")
+                subCategories.push(subCategory.slice(0,1));
                 advantage += 5;
             }
         }
@@ -313,7 +319,11 @@ function submitScore() {
     scoreInput = document.getElementsByName('score-submit')[0];
     teamName = document.getElementsByName('name-submit')[0];
     matchChoice = document.getElementsByName('match-submit')[0];
-    scoreInput.value = score;
+    if (advantageOn) {
+        scoreInput.value = score + advantage;
+    } else {
+        scoreInput.value = score;
+    }
     nameOption = document.getElementsByName('team-choice')[0]
     teamName.value = nameOption.options[nameOption.selectedIndex].value;
     matchOption = document.getElementById('match-choice')

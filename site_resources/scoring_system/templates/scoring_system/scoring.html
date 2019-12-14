@@ -123,7 +123,7 @@
                                             {% endfor %}
                                         </select>
                                     {% else %}
-                                        <select id="default-select" name="default-select" onchange="selectUpdate(this)" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
+                                        <select id="default-select" name="default-select" onchange="selectUpdate(this)" sub-category="{{ criteria.sub_category }}" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
                                             <option value="0">0</option>
                                             {% for i in criteria.max_input|range %}
                                                 <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
