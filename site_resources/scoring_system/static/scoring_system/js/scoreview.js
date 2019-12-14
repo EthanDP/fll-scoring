@@ -23,6 +23,7 @@ function startSocket() {
     socket.onmessage = function(e){
         console.log("Got websocket message " + e.data);
         var data = e.data;
+        console.log(data);
 
         /* Messages and their meanings
             'user connected': User has successfully been connected to the web socket
@@ -35,16 +36,18 @@ function startSocket() {
 
         if (data == 'user connected') {
             document.querySelector('#connection-status').innerHTML = "User Connected";
-        } else if (data == 'start match') {
-            // TODO
-        } else if (data == 'end match') {
-            // TODO
-        } else if (data == 'clear') {
-            // TODO
+        } else if (data == 'match start') {
+            console.log("AAAAAAAAAAAAAAAAAAAAAAA");
+            timer = new _timer;
+            timer.reset(150);
+            timer.mode(0);
+            timer.start();
         } else if (data[0] == 'r') {
             document.querySelector('#red-score').innerHTML = data.slice(1);
         } else if (data[0] == 'b') {
             document.querySelector('#blue-score').innerHTML = data.slice(1);
+        } else {
+            console.log("Something went wrong");
         }
     }
 

@@ -2,7 +2,7 @@
 {% load static %}
 {% load range %}
 
-<!-- Anything with brackets and/or percentages is using django's templating language -->
+<!-- Anything with brackets and/or percentages is django's templating language -->
 
 {% block head %}
     <title>Scoring System</title>
@@ -13,118 +13,194 @@
 {% block content %}
     <!-- TODO: add role selector that keeps content hidden until selected
          TODO: add connect and start buttons so refs can choose team and match before starting -->
-    <select id="team-selector">
-        <option value="red">Red</option>
-        <option value="blue">Blue</option>
+    <select class="role-choice" onchange="roleUpdate(this)">
+        <option value="none" selected="selected">Select a role</option>
+        <option value="scoring">Scorer</option>
+        <option value="starting">Starter</option>
     </select>
 
-    <select name="team-choice">
-    {% for team in teams %}
-        <option value="{{ team.name }}">{{ team.name }}</option>
-    {% endfor %}
-    </select>
-    
-    <select id="match-choice">
-        <option value="match1">First Match</option>
-        <option value="match2">Second Match</option>
-        <option value="match3">Third Match</option>
-    </select>
-
-    <!-- Cycles through each category defined within our SQLite database and a django model -->
-    {% for category in scoring_categories %}
-        <div class="scoring-category">
-            <table class="scoring-table">
-                <tr>
-                    <th class="category-header">{{ category.category_name }}</th>
-                </tr>
-                <th class="image-cell" rowspan="0">
-                    <img class="category-image" src="{{ category.category_image.url }}">
-                </th>
-                {% for criteria in category.category_criteria.all %}
-                    <tr>
-                        <th class="criteria-header">{{ criteria.task_description }}</th>
-                    </tr>
-                    <tr>
-                        {% if criteria.score_type == "b" %}
-                            <td>
-                                <label class="container">Yes
-                                    <input type="checkbox" name="checkYes" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" point-value="{{ criteria.score_multiplier }}" onclick="switchCheckBoxes(this)">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                            <td>
-                                <label class="container">No
-                                    <input type="checkbox" name="checkNo" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" point-value="{{ criteria.score_multiplier }}" onclick="switchCheckBoxes(this)">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        {% elif criteria.score_type == "i" %}
-                            <td>
-                                {% if criteria.sub_category == "n1" %}
-                                    <select id="precision-select" onchange="precisionUpdate(this)" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
-                                        <option value="0">0</option>
-                                        {% for i in criteria.max_input|range %}
-                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                                        {% endfor %}
-                                    </select>
-                                {% else %}
-                                    <select id="default-select" onchange="selectUpdate(this)" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
-                                        <option value="0">0</option>
-                                        {% for i in criteria.max_input|range %}
-                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                                        {% endfor %}
-                                    </select>
-                                {% endif %}
-                            </td>
-                        {% else %}
-                            <p>Something went wrong</p>
-                            <p>{{ criteria.score_type }}</p>
-                            <p>Heyo</p>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-    {% endfor %}
-
-    <form id="score-form" action="submit_score" method="POST">
-        {% csrf_token %}
-        <input type="text" name="score-submit" class="score-submit">
-        <input type="text" name="name-submit" class="name-submit">
-        <input type="text" name="match-submit" class="match-submit">
-    </form>
-
-    <input type="button" class="submit-button" value="Submit Score" onclick="submitScore()">
-
-    <div class="sticky">
-        <table class="sticky-table">
-            <tr>
-                <th id="score-indicator">Score:</th>
-                <th name="final-score" id="score-value">0</th>
-                <th>
-                    <div class="timer" id="timer-text">
-                        <span class="minute">00</span>:<span class="second">10</span>
-                    </div>
-                </th>
-                <th>
-                </th>
-            </tr>
-        </table>
+    <div class="starting-elements">
+        <input type="button" class="connect-button" value="Connect" onclick="startRoutine('starter')">
     </div>
 
+    <div class="start-button" id="start-button">
+            <input type="button" class="actual-start-button" value="Start Match Countdown" onclick="startMatch()">
+            <table class="sticky-table">
+                <tr>
+                    <th>
+                        <div class="timer" id="timer-text">
+                            <span class="minute">00</span>:<span class="second">10</span>
+                        </div>
+                    </th>
+                </tr>
+            </table>
+        </div>
+
+    <div class="scoring-selectors">
+        <select id="team-selector">
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+        </select>
+
+        <select name="team-choice">
+        {% for team in teams %}
+            <option value="{{ team.name }}">{{ team.name }} {{ team.number }}</option>
+        {% endfor %}
+        </select>
+        
+        <select id="match-choice">
+            <option value="match1">First Match</option>
+            <option value="match2">Second Match</option>
+            <option value="match3">Third Match</option>
+        </select>
+
+        <input type="button" value="Connect" class="connect-button" onclick="startRoutine('scorer')">
+    </div>
+
+    <div class="scoring-elements" id="scoring-elements">
+            <div class="scoring-category">
+                <table class="scoring-table">
+                    <tr>
+                        <th class="category-header">ADVANTAGE</th>
+                    </tr>
+                    <th class="image-cell" rowspan="0">
+                        <img class="category-image" src="{% static 'scoring_system/images/A00.jpg' %}">
+                    </th>
+                    <tr>
+                        <th class="criteria-header">Does the team's Equipment fit in the Small Inspection Area?</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="container">Yes
+                                <input type="checkbox" name="checkYes" sub-category="advantage1" criteria-id="advantage" point-value="0" onclick="switchCheckBoxes(this)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="container">No
+                                <input type="checkbox" name="checkNo" sub-category="advantage1" criteria-id="advantage" point-value="0" onclick="switchCheckBoxes(this)">
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        <!-- Cycles through each category defined within our SQLite database and a django model -->
+        {% for category in scoring_categories %}
+            <div class="scoring-category">
+                <table class="scoring-table">
+                    <tr>
+                        <th class="category-header">{{ category.category_name }}</th>
+                    </tr>
+                    <th class="image-cell" rowspan="0">
+                        <img class="category-image" src="{{ category.category_image.url }}">
+                    </th>
+                    {% for criteria in category.category_criteria.all %}
+                        <tr>
+                            <th class="criteria-header">{{ criteria.task_description }}</th>
+                        </tr>
+                        <tr>
+                            {% if criteria.score_type == "b" %}
+                                <td>
+                                    <label class="container">Yes
+                                        <input type="checkbox" name="checkYes" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" point-value="{{ criteria.score_multiplier }}" onclick="switchCheckBoxes(this)">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="container">No
+                                        <input type="checkbox" name="checkNo" sub-category="{{ criteria.sub_category }}" criteria-id="{{ forloop.counter }}" point-value="{{ criteria.score_multiplier }}" onclick="switchCheckBoxes(this)">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                            {% elif criteria.score_type == "i" %}
+                                <td>
+                                    {% if criteria.sub_category == "n1" %}
+                                        <select id="precision-select" onchange="precisionUpdate(this)" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
+                                            <option value="0">0</option>
+                                            {% for i in criteria.max_input|range %}
+                                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <select id="default-select" name="default-select" onchange="selectUpdate(this)" point-value="{{ criteria.score_multiplier }}" old-value="{{ criteria.default }}">
+                                            <option value="0">0</option>
+                                            {% for i in criteria.max_input|range %}
+                                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% endif %}
+                                </td>
+                            {% else %}
+                                <p>Something went wrong</p>
+                                <p>{{ criteria.score_type }}</p>
+                                <p>Heyo</p>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+
+        <form id="score-form" action="submit_score" method="POST">
+            {% csrf_token %}
+            <input type="text" name="score-submit" class="score-submit">
+            <input type="text" name="name-submit" class="name-submit">
+            <input type="text" name="match-submit" class="match-submit">
+        </form>
+
+        <input type="button" class="submit-button" value="Submit Score" onclick="submitScore()">
+
+        <div class="sticky" id="scorer-sticky">
+                <table class="sticky-table">
+                    <tr>
+                        <th id="score-indicator">Score:</th>
+                        <th name="final-score" id="score-value">0</th>
+                        <th>
+                            <div class="timer" id="timer-text">
+                                <span class="minute">00</span>:<span class="second">10</span>
+                            </div>
+                        </th>
+                    </tr>
+                </table>
+        </div>
+    </div>
+
+    
+
     <script>
+        roleSelector = document.getElementsByClassName("role-choice")[0]
+        roleSelector.value = "none";
+
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         // Waits to update score until sufficient time has been given for the socket to connect
-        async function startRoutine() {
-            startSocket();
-            defaultCheckBoxes();
-            await sleep(5000);
-            updateScore();
-        }
+        async function startRoutine(role) {
+            roleElements = [document.getElementsByClassName('role-choice')[0]];
+            if (role == "starter") {
+                roleElements.push(document.getElementsByClassName('starting-elements')[0]);
+                document.getElementsByClassName('role-choice')[0].style.display = "none";
+                document.getElementsByClassName('starting-elements')[0].style.display = "none";
+                document.getElementsByClassName('start-button')[0].style.display = "block";
+            } else {
+                console.log("Bruruuuu")
+                roleElements.push(document.getElementsByClassName('scoring-selectors')[0])
+                document.getElementsByClassName('scoring-elements')[0].style.display = "block";
+            }
 
-        startRoutine();
+            for (i = 0; i < roleElements.length; i++) {
+                roleElements[i].style.display = "none";
+            }
+
+            startSocket(role);
+            
+            if (role != "starter") {
+                defaultCheckBoxes();
+                await sleep(5000);
+                updateScore(); 
+            }
+        }
     </script>
 {% endblock %}

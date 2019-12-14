@@ -1,10 +1,13 @@
 var socket = null;
 var score = 0;
+var advantage = 0;
+var advantageOn = false;
 var buzzer;
 var timer;
+var started = false;
 
 // Initializes the socket variable and handles events
-function startSocket() {
+function startSocket(role) {
     var loc = window.location;
 
     var wsStart = 'ws://'
@@ -17,12 +20,19 @@ function startSocket() {
     console.log(endpoint);
 
     socket.onmessage = function(e){
-        console.log("score update", e);
+        console.log("socket update", e);
         data = e.data;
+        console.log(data);
         //var team = document.querySelector('#selected-team').innerHTML;
         // Sends current score data if a user connects during a match
         if (data == 'score request') {
             updateScore();
+        } else if (data == 'match start') {
+            console.log("AAAAAAAAAAAAAAAAAAAAAAA");
+            timer = new _timer;
+            timer.reset(150);
+            timer.mode(0);
+            timer.start();
         }
     }
     socket.onopen = function(e){
@@ -34,6 +44,32 @@ function startSocket() {
     }
     socket.onclose = function(e){
         console.log("close", e);
+    }
+}
+
+function roleUpdate(roleSelector) {
+    role = roleSelector.options[roleSelector.selectedIndex].value;
+
+    console.log("UPDATING ROLE");
+
+    startingElements = document.getElementsByClassName("starting-elements")[0];
+    scoringElements = document.getElementsByClassName("scoring-elements")[0];
+    scoringSelectors = document.getElementsByClassName("scoring-selectors")[0];
+
+    console.log(scoringSelectors)
+
+    if (role == "scoring") {
+        startingElements.style.display = "none";
+        scoringSelectors.style.display = "block";
+        scoringElements.style.display = "none";
+    } else if (role == "starting") {
+        startingElements.style.display = "block";
+        scoringSelectors.style.display = "none";
+        scoringElements.style.display = "none";
+    } else {
+        startingElements.style.display = "none";
+        scoringSelectors.style.display = "none";
+        scoringElements.style.display = "none";
     }
 }
 
@@ -103,6 +139,7 @@ function switchCheckBoxes(selectedBox) {
         selectedBox.checked = true;
         oppositeBox.checked = false;
         score += parseInt(selectedBox.getAttribute('point-value'));
+    
     } else {
         for (i = 0; i < oppositeSubCategoryBoxes.length; i++) {
             currentBox = oppositeSubCategoryBoxes[i];
@@ -114,7 +151,24 @@ function switchCheckBoxes(selectedBox) {
         score -= parseInt(selectedBox.getAttribute('point-value'));
     }
 
-    updateScore();
+
+    if (selectedBox.getAttribute('criteria-id') == 'advantage') {
+        if (selectedBox.getAttribute('name') == 'checkYes') {
+            advantageOn = true;
+            updateAdvantage(true);
+        } else {
+            advantageOn = false;
+            updateAdvantage(false);
+        }
+    } else {
+        console.log('Yee hawww')
+        if (advantageOn) {
+            updateAdvantage(true);
+        } else {
+            updateAdvantage(false);
+            updateScore();
+        }
+    }
 }
 
 // Logic for select boxes
@@ -135,10 +189,49 @@ function selectUpdate(select, defaulting=false) {
     score += newValue * pointValue;
     select.setAttribute('old-value', newValue)
     if (defaulting) {
-        updateScore(true)
+        updateScore(true);
     } else {
         updateScore();
     }
+}
+
+function updateAdvantage(yesAdvantage) {
+    var subCategories = [];
+    advantage = 0;
+
+    if (yesAdvantage) {
+        var yesBoxes = document.getElementsByName("checkYes");
+        var integerInputs = document.getElementsByName("default-select");
+        var subCategory = "";
+
+        for (i = 0; i < yesBoxes.length; i++) {
+            subCategory = yesBoxes[i].getAttribute('sub-category');
+            if (yesBoxes[i].checked == true && subCategory != 'advantage1' && !subCategories.includes(subCategory)) {
+                console.log("Successfully found something for advantage so that's cool")
+                subCategories.push(subCategory);
+                if (subCategory.includes('b')) {
+                    advantage += 10;
+                } else {
+                    advantage += 5;
+                }
+            }
+        }
+
+        for (i = 0; i < integerInputs.length; i++) {
+            subCategory = integerInputs[i].getAttribute('sub-category');
+            if (parseInt(integerInputs[i].options[integerInputs[i].selectedIndex].value) > 0 && !subCategories.includes(subCategory)) {
+                console.log("Successfully found something for advantage so that's cool")
+                subCategories.push(subCategory);
+                advantage += 5;
+            }
+        }
+    }
+
+    for (i = 0; i < subCategories.length; i++) {
+        console.log(subCategories[i]);
+    }
+
+    updateScore();
 }
 
 // Logic for precision tokens since they do not have a single score value associated with them
@@ -186,21 +279,33 @@ function precisionUpdate(select, defaulting=false) {
 
 // Updates the score on the scoring page and sends a socket message
 function updateScore(defaulting = false) {
-    document.querySelector('#score-value').innerHTML = score;
+    document.querySelector('#score-value').innerHTML = score + advantage;
     if (defaulting) {
         return;
     }
     var team = document.querySelector('#team-selector').value;
     var message = '';
     if (team == 'red') {
-        message = 'r' + score;
+        message = 'r' + (score + advantage);
     } else {
-        message = 'b' + score;
+        message = 'b' + (score + advantage);
     }
     console.log(message);
     socket.send(JSON.stringify({
         'message': message
     }))
+}
+
+function startMatch() {
+    console.log("Hey");
+    if (started) {
+        console.log("Match already started")
+    } else {
+        started = true;
+        socket.send(JSON.stringify({
+            'message': 'start timer'
+        }))
+    }
 }
 
 // Submits the score and associated team and match to the views.py file to handle
@@ -219,7 +324,7 @@ function submitScore() {
 
 function _timer(callback)
 {
-    var time = 1;     //  The default time of the timer
+    var time = 3;     //  The default time of the timer
     var mode = 1;     //    Mode: count up or count down
     var status = 0;    //    Status: timer is running or stoped
     var timer_id;    //    This is used by setInterval function

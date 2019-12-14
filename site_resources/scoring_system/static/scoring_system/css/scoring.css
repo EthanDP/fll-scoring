@@ -1,3 +1,17 @@
+.starting-elements, .scoring-selectors, .scoring-elements, .start-button {
+  display: none;
+}
+
+.connect-button {
+  width: 150px;
+  height: 100px;
+}
+
+.actual-start-button {
+  width: 200px;
+  height: 100px;
+}
+
 .scoring-category, .scoring-table {
   margin-left: auto;
   margin-right: auto;
@@ -161,12 +175,12 @@
   to {transform: scale(1)}
 }
 
-.sticky {
+#starter-sticky, #scorer-sticky {
   position: -webkit-sticky;
   position: sticky;
   bottom: 0;
   height: 100px;
-  background-color: steelblue;
+  background-color: rgb(136, 136, 136);
   align-content: center;
   text-align: center;
   margin: 0 auto;

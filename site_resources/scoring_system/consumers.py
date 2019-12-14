@@ -20,8 +20,10 @@ class ScoreConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         print("Receive: ", event)
         data = event.get('text', None)
+        print("data")
         if data:
             loaded_data = json.loads(data)
+            
             if loaded_data['message'] == 'user connected':
                 print("Hey")
                 await self.channel_layer.group_send(
@@ -29,6 +31,15 @@ class ScoreConsumer(AsyncConsumer):
                     {
                         'type': 'score_update',
                         'text': 'score request'
+                    }
+                )
+            elif loaded_data['message'] == 'start timer':
+                print("Should send a socket message here")
+                await self.channel_layer.group_send(
+                    "match_view",
+                    {
+                        'type': 'start_match',
+                        'text': 'match start'
                     }
                 )
             else:
@@ -41,6 +52,12 @@ class ScoreConsumer(AsyncConsumer):
                 )
 
     async def score_update(self, event):
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['text']
+        })
+
+    async def start_match(self, event):
         await self.send({
             'type': 'websocket.send',
             'text': event['text']
