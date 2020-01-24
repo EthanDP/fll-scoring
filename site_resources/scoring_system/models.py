@@ -37,10 +37,10 @@ class Match(models.Model):
         first = self.teams.all()[0]
         second = self.teams.all()[1]
         if str(self.red_number) == str(first.number):
-            return str("#" + self.match_number + " " + first.number + " " + first.name + 
+            return str("#" + str(self.round_number) + " " + first.number + " " + first.name + 
                 " and " + second.number + " " + second.name)
         else:
-            return str("#" + self.match_number + " " + second.number + " " + second.name + 
+            return str("#" + str(self.round_number) + " " + second.number + " " + second.name + 
                 " and " + first.number + " " + first.name)
 
 class ScoringCriteria(models.Model):

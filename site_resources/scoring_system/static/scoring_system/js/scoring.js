@@ -330,6 +330,7 @@ function setValues(matchRound, chosenTeam) {
 
 // Submits the score and associated team and match to the views.py file to handle
 function submitScore() {
+    // Team name is actually the team number now
     scoreInput = document.getElementsByName('score-submit')[0];
     teamName = document.getElementsByName('name-submit')[0];
     roundChoice = document.getElementsByName('match-submit')[0];
@@ -339,9 +340,8 @@ function submitScore() {
         scoreInput.value = score;
     }
     nameOption = selectedTeam;
-    teamName.value = nameOption.options[nameOption.selectedIndex].value;
-    matchOption = round;
-    matchChoice.value = matchOption.options[matchOption.selectedIndex].value;
+    teamName.value = selectedTeam;
+    roundChoice.value = round;
     document.getElementById('score-form').submit();
 }
 

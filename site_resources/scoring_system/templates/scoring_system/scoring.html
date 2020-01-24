@@ -192,15 +192,21 @@
             // Get selected match OR ELSELELELLLLLL
             colorSelector = document.getElementById('team-selector');
             teamColor = colorSelector.options[colorSelector.selectedIndex].value;
+            matchSelector = document.getElementById('match-selector');
+            console.log(matchSelector, "AAAAAAAAAAAAAAAAAAAAA");
+            roundNumber = parseInt(matchSelector.options[matchSelector.selectedIndex].value);
             team = null
-            if (teamColor == "red") {
-                team = document.get
-            } else if (teamColor == "blue") {
 
-            } else {
-                console.log("UHHHHH MEOW??");
+            if (teamColor == "red") {
+                team = parseInt(matchSelector.options[matchSelector.selectedIndex].getAttribute('red'));
+                console.log("TEAM VALUE: :::: ", team)
+            } else if (teamColor == "blue") {
+                console.log("The team chosen is blue");
+                team = parseInt(matchSelector.options[matchSelector.selectedIndex].getAttribute('blue'));
+                console.log("Team value ", team)
             }
-            setValues();
+
+            setValues(roundNumber, team);
 
             for (i = 0; i < roleElements.length; i++) {
                 roleElements[i].style.display = "none";
