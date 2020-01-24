@@ -2,6 +2,7 @@ var socket = null;
 var audio_url = null;
 var start_url = null;
 var timer;
+var page_initialized = false;
 
 // Sets the url of the buzzer sound effect
 function setURL(url) {
@@ -171,11 +172,13 @@ function _timer(callback)
         $('div.timer span.second').html(second);
         $('div.timer span.minute').html(minute);
 
-        if (time == 0) {
+        if (time == 0 && page_initialized) {
             var audio = new Audio(audio_url)
             audio.play()
             timer.stop();
             console.log("Match Ended");
+        } else if (time == 0) {
+            page_initialized = true;
         }
     }
 }

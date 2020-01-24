@@ -1,13 +1,8 @@
-from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
 
-# Scoring Page Elements
-class EventUser(models.Model):
-    # Account data for event scorekeepers
-    username = models.CharField(max_length=20)
 
 class Team(models.Model):
     # Team data, will be available for event scorekeeprs to modify
@@ -31,6 +26,22 @@ class Team(models.Model):
 
     def __str__ (self):
         return self.name + " " + self.number
+
+class Match(models.Model):
+    teams = models.ManyToManyField(Team, symmetrical=False)
+    red_number = models.SmallIntegerField()
+    blue_number = models.SmallIntegerField()
+    round_number = models.SmallIntegerField()
+
+    def __str__(self):
+        first = self.teams.all()[0]
+        second = self.teams.all()[1]
+        if str(self.red_number) == str(first.number):
+            return str("#" + self.match_number + " " + first.number + " " + first.name + 
+                " and " + second.number + " " + second.name)
+        else:
+            return str("#" + self.match_number + " " + second.number + " " + second.name + 
+                " and " + first.number + " " + first.name)
 
 class ScoringCriteria(models.Model):
     # The individual tasks in a scoring category, can only be modified by
@@ -56,4 +67,3 @@ class ScoringCategory(models.Model):
 
     def __str__ (self):
         return self.category_name
-

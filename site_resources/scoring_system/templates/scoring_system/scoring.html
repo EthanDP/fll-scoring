@@ -37,21 +37,20 @@
         </div>
 
     <div class="scoring-selectors">
+        <select id="match-selector">
+            {% for match in matches %}
+                <option value="{{ match.round_number }}" red="{{ match.red_number }}" blue="{{ match.blue_number }}">
+                    #{{ forloop.counter }} 
+                    {% for team in match.teams.all %}
+                        {{ team.name }} {{ team.number }} 
+                    {% endfor %}
+                </option>
+            {% endfor %}
+        </select>
+
         <select id="team-selector">
             <option value="red">Red</option>
             <option value="blue">Blue</option>
-        </select>
-
-        <select name="team-choice">
-        {% for team in teams %}
-            <option value="{{ team.name }}">{{ team.name }} {{ team.number }}</option>
-        {% endfor %}
-        </select>
-        
-        <select id="match-choice">
-            <option value="match1">First Match</option>
-            <option value="match2">Second Match</option>
-            <option value="match3">Third Match</option>
         </select>
 
         <input type="button" value="Connect" class="connect-button" onclick="startRoutine('scorer')">
@@ -189,6 +188,19 @@
                 roleElements.push(document.getElementsByClassName('scoring-selectors')[0])
                 document.getElementsByClassName('scoring-elements')[0].style.display = "block";
             }
+
+            // Get selected match OR ELSELELELLLLLL
+            colorSelector = document.getElementById('team-selector');
+            teamColor = colorSelector.options[colorSelector.selectedIndex].value;
+            team = null
+            if (teamColor == "red") {
+                team = document.get
+            } else if (teamColor == "blue") {
+
+            } else {
+                console.log("UHHHHH MEOW??");
+            }
+            setValues();
 
             for (i = 0; i < roleElements.length; i++) {
                 roleElements[i].style.display = "none";

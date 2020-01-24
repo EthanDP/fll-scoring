@@ -320,19 +320,27 @@ function startMatch() {
     }
 }
 
+round = null;
+selectedTeam = null;
+
+function setValues(matchRound, chosenTeam) {
+    round = matchRound;
+    selectedTeam = chosenTeam;
+}
+
 // Submits the score and associated team and match to the views.py file to handle
 function submitScore() {
     scoreInput = document.getElementsByName('score-submit')[0];
     teamName = document.getElementsByName('name-submit')[0];
-    matchChoice = document.getElementsByName('match-submit')[0];
+    roundChoice = document.getElementsByName('match-submit')[0];
     if (advantageOn) {
         scoreInput.value = score + advantage;
     } else {
         scoreInput.value = score;
     }
-    nameOption = document.getElementsByName('team-choice')[0]
+    nameOption = selectedTeam;
     teamName.value = nameOption.options[nameOption.selectedIndex].value;
-    matchOption = document.getElementById('match-choice')
+    matchOption = round;
     matchChoice.value = matchOption.options[matchOption.selectedIndex].value;
     document.getElementById('score-form').submit();
 }

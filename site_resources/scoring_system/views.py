@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
-from .models import ScoringCategory, Team
+from .models import ScoringCategory, Team, Match
 from django.contrib.auth.decorators import login_required
 
 def team_rankings(request): # Scoreboard/rankings of teams
@@ -17,22 +17,23 @@ def match(request): # Live view of match score for public
 def scoring(request): # Match scoring page for event users
     context = {
         'scoring_categories': ScoringCategory.objects.all(),
-        'teams': Team.objects.all()
+        'teams': Team.objects.all(),
+        'matches': Match.objects.all(),
     }
     return render(request, 'scoring_system/scoring.html', context)
 
 def submit_score(request):
     if request.method == 'POST':
-        team_name = request.POST.get('name-submit')
+        team_number = request.POST.get('name-submit')
         match = request.POST.get('match-submit')
         score = request.POST.get('score-submit')
-        selected_team = Team.objects.get(name=team_name)
+        selected_team = Team.objects.get(number=team_number)
         print("BRUH ", match)
-        if match == "match1":
+        if match == "1":
             selected_team.match1 = score
-        elif match == "match2":
+        elif match == "2":
             selected_team.match2 = score
-        elif match == "match3":
+        elif match == "3":
             selected_team.match3 = score
         else:
             print("Invalid match value.")
