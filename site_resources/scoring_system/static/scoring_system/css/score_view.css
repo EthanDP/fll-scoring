@@ -9,6 +9,11 @@
     margin-right: auto;
 }
 
+.big-timer-div {
+    margin-left: 32.5%;
+    margin-top: 7%;
+}
+
 .team-table, .score-table {
     margin-left: auto;
     margin-right: auto;
@@ -19,7 +24,7 @@
 .red-name, .blue-name{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 40px;
-    width: 35%;
+    width: 30%;
 }
 
 .vs {
@@ -27,13 +32,13 @@
 }
 
 .red-header {
-    width: 35%;
+    width: 30%;
     background-color: #ed1c24;
     text-align: center;
 }
 
 .blue-header {
-    width: 35%;
+    width: 30%;
     background-color: #0066b3;
     text-align: center;
 }
@@ -57,10 +62,10 @@
 }
 
 div.timer {
-    width:200px;
+    width:250px;
     height:100px;
     line-height:90px;
-    font-size:50px;
+    font-size:100px;
     font-family: Roboto, Verdana, Geneva, Tahoma, sans-serif;
     text-align:center;
     margin-left: auto;

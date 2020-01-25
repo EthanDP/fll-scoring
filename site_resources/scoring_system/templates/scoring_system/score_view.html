@@ -10,19 +10,25 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Current Match</h1>
+        <table class="big-timer-div">
+                <th class="timer-header">
+                    <div class="timer">
+                        <span class="minute">02</span>:<span class="second">30</span>
+                    </div>
+                </th>
+        </table>
     </div>
     <div class="score-div">
         <table class="team-table">
             <tr class="team-header">
                 <th class="red-name">
-                    Red Team
+                    Red
                 </th>
                 <th class="vs">
                       
                 </th>
                 <th class="blue-name">
-                    Blue Team
+                    Blue
                 </th>
             </tr>
         </table>
@@ -32,9 +38,7 @@
                     <h1 id="red-score">0</h1>
                 </th>
                 <th class="timer-header">
-                    <div class="timer">
-                        <span class="minute">02</span>:<span class="second">30</span>
-                    </div>
+
                 </th>
                 <th class="blue-header">
                     <h1 id="blue-score">0</h1>

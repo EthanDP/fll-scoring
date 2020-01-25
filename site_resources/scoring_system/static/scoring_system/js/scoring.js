@@ -322,10 +322,12 @@ function startMatch() {
 
 round = null;
 selectedTeam = null;
+matchNumber = null;
 
-function setValues(matchRound, chosenTeam) {
+function setValues(matchRound, chosenTeam, matchNo) {
     round = matchRound;
     selectedTeam = chosenTeam;
+    matchNumber = matchNo;
 }
 
 // Submits the score and associated team and match to the views.py file to handle
@@ -334,6 +336,7 @@ function submitScore() {
     scoreInput = document.getElementsByName('score-submit')[0];
     teamName = document.getElementsByName('name-submit')[0];
     roundChoice = document.getElementsByName('match-submit')[0];
+    matchNo = document.getElementsByName('match-number-submit')[0];
     if (advantageOn) {
         scoreInput.value = score + advantage;
     } else {
@@ -342,6 +345,7 @@ function submitScore() {
     nameOption = selectedTeam;
     teamName.value = selectedTeam;
     roundChoice.value = round;
+    matchNo.value = matchNumber
     document.getElementById('score-form').submit();
 }
 

@@ -39,8 +39,8 @@
     <div class="scoring-selectors">
         <select id="match-selector">
             {% for match in matches %}
-                <option value="{{ match.round_number }}" red="{{ match.red_number }}" blue="{{ match.blue_number }}">
-                    #{{ forloop.counter }} 
+                <option value="{{ match.round_number }}" match-number="{{ match.match_number }}" red="{{ match.red_number }}" blue="{{ match.blue_number }}">
+                    #{{ match.match_number }} 
                     {% for team in match.teams.all %}
                         {{ team.name }} {{ team.number }} 
                     {% endfor %}
@@ -146,6 +146,7 @@
             <input type="text" name="score-submit" class="score-submit">
             <input type="text" name="name-submit" class="name-submit">
             <input type="text" name="match-submit" class="match-submit">
+            <input type="text" name="match-number-submit" class="match-number-submit">
         </form>
 
         <input type="button" class="submit-button" value="Submit Score" onclick="submitScore()">
@@ -195,6 +196,7 @@
             matchSelector = document.getElementById('match-selector');
             console.log(matchSelector, "AAAAAAAAAAAAAAAAAAAAA");
             roundNumber = parseInt(matchSelector.options[matchSelector.selectedIndex].value);
+            matchNumber = parseInt(matchSelector.options[matchSelector.selectedIndex].getAttribute('match-number'));
             team = null
 
             if (teamColor == "red") {
@@ -206,7 +208,7 @@
                 console.log("Team value ", team)
             }
 
-            setValues(roundNumber, team);
+            setValues(roundNumber, team, matchNumber);
 
             for (i = 0; i < roleElements.length; i++) {
                 roleElements[i].style.display = "none";

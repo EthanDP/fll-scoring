@@ -192,7 +192,7 @@
   margin-right: auto;
 }
 
-.score-submit, .name-submit, .match-submit {
+.score-submit, .name-submit, .match-submit, .match-number-submit {
   visibility: hidden;
 }
 
