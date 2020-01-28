@@ -11,6 +11,7 @@ class Team(models.Model):
     match1 = models.CharField(max_length=4, blank=True, default="/")
     match2 = models.CharField(max_length=4, blank=True, default="/")
     match3 = models.CharField(max_length=4, blank=True, default="/")
+    highest_score = models.CharField(max_length=4, blank=True, default="/")
 
     def highest(self):
         score1 = 0
@@ -22,7 +23,20 @@ class Team(models.Model):
             score2 = int(self.match2)
         if self.match3 != "/":
             score3 = int(self.match3)
+        self.highest_score = max([score1, score2, score3])
         return max([score1, score2, score3])
+
+    def second_highest(self):
+        score1 = 0
+        score2 = 0
+        score3 = 0
+        if self.match1 != "/":
+            score1 = int(self.match1)
+        if self.match2 != "/":
+            score2 = int(self.match2)
+        if self.match3 != "/":
+            score3 = int(self.match3)
+        return sorted([score1, score2, score3])[1]
 
     def __str__ (self):
         return self.name + " " + self.number

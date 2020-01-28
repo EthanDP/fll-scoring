@@ -12,8 +12,37 @@ import os
 import time
 
 def team_rankings(request): # Scoreboard/rankings of teams
+    teams = sorted(Team.objects.all(), key=lambda x: x.highest(), reverse=True)
+    final_teams = []
+    equal_teams = []
+    current_max = -1
+    initial_index = -1
+    team_indexes = []
+    for i in range(len(teams)):
+        if teams[i].highest() == current_max:
+            equal_teams.append(teams[i])
+            team_indexes.append(i)
+            print("Current max was equal")
+        elif len(equal_teams) > 0:
+            tie_sorted = list(zip(equal_teams, team_indexes))
+            tie_sorted = sorted(tie_sorted, key=lambda x: x[0].second_highest(), reverse=True)
+            print(tie_sorted)
+            for j in range(len(tie_sorted)):
+                final_teams.append(tie_sorted[j][0])
+            equal_teams = [teams[i]]
+            team_indexes = [i]
+            current_max = teams[i].highest()
+            initial_index = i
+        else:
+            print("List was empty")
+            current_max = teams[i].highest()
+            initial_index = i
+            equal_teams = [teams[i]]
+            team_indexes = [i]
+
+
     context = {
-        'teams': sorted(Team.objects.all(), key=lambda x: x.highest(), reverse=True)
+        'teams': final_teams
     }
     return render(request, 'scoring_system/rankings.html', context)
 
