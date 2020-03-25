@@ -5,9 +5,9 @@ from . import views
 
 urlpatterns = [
     path('', views.team_rankings),
-    path('match', views.match),
+    path('match/<int:field>', views.match),
     path('scoring', views.scoring),
-    path('judging', views.judging),
+    path('judge_panel', views.judge_panel),
     path('submit_score', views.submit_score, name='submit_score'),
     path('generate_results', views.generate_results, name='generate_results')
 ]

@@ -39,7 +39,7 @@
     <div class="scoring-selectors">
         <select id="match-selector">
             {% for match in matches %}
-                <option value="{{ match.round_number }}" match-number="{{ match.match_number }}" red="{{ match.red_number }}" blue="{{ match.blue_number }}">
+                <option value="{{ match.round_number }}" match-number="{{ match.match_number }}" red="{{ match.t1_number }}" blue="{{ match.t2_number }}">
                     #{{ match.match_number }} 
                     {% for team in match.teams.all %}
                         {{ team.name }} {{ team.number }} 

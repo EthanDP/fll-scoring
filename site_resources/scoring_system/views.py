@@ -1,16 +1,20 @@
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
-from .models import ScoringCategory, Team, Match
+from .models import ScoringCategory, Team, Match, FieldData
 from django.contrib.auth.decorators import login_required
 from django.utils.encoding import smart_str
 from django.core.files.storage import default_storage
 from wsgiref.util import FileWrapper
+from django.contrib.auth.decorators import user_passes_test
 
 import csv
 import os
 import time
-
+def is_judge(user):
+    return user.username == "judge"
+def is_ref(user):
+    return user.username == "referee"
 def team_rankings(request): # Scoreboard/rankings of teams
     teams = sorted(Team.objects.all(), key=lambda x: x.highest(), reverse=True)
     final_teams = []
@@ -46,10 +50,14 @@ def team_rankings(request): # Scoreboard/rankings of teams
     }
     return render(request, 'scoring_system/rankings.html', context)
 
-def match(request): # Live view of match score for public
-    return render(request, 'scoring_system/score_view.html')
+def match(request, field=1): # Live view of match score for public
+    context = {
+        'field': field,
+        'field_data': FieldData.objects.all()[0]
+    }
+    return render(request, 'scoring_system/score_view.html', context)
 
-@login_required
+@user_passes_test(is_ref)
 def scoring(request): # Match scoring page for event users
     context = {
         'scoring_categories': ScoringCategory.objects.all(),
@@ -57,10 +65,12 @@ def scoring(request): # Match scoring page for event users
         'matches': Match.objects.all(),
     }
     return render(request, 'scoring_system/scoring.html', context)
-
-@login_required
-def judging(request):
-    return render(request, 'scoring_system/judging.html')
+@user_passes_test(is_judge)
+def judge_panel(request):
+    context = {
+        'field_data': FieldData.objects.all()[0]
+    }
+    return render(request, 'scoring_system/judge_panel.html', context)
 
 def submit_score(request):
     if request.method == 'POST':
@@ -107,3 +117,7 @@ def generate_results(request):
     # It's usually a good idea to set the 'Content-Length' header too.
     # You can also set any other required headers: Cache-Control, etc.
     return response
+
+def update_fields(request):
+    pass
+

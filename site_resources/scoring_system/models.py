@@ -43,8 +43,9 @@ class Team(models.Model):
 
 class Match(models.Model):
     teams = models.ManyToManyField(Team, symmetrical=False)
-    red_number = models.SmallIntegerField()
-    blue_number = models.SmallIntegerField()
+    t1_number = models.SmallIntegerField()
+    t2_number = models.SmallIntegerField()
+    field_number = models.SmallIntegerField()
     round_number = models.SmallIntegerField()
     match_number = models.SmallIntegerField()
     total_submitted = models.SmallIntegerField(default=0)
@@ -58,6 +59,20 @@ class Match(models.Model):
         else:
             return str("#" + str(self.match_number) + " " + second.number + " " + second.name + 
                 " and " + first.number + " " + first.name)
+
+class FieldData(models.Model):
+    # Field 1
+    f1_enabled = models.BooleanField(blank=True, default=True)
+    f1_t1_color = models.CharField(max_length=10, blank=True, default="Red")
+    f1_t2_color = models.CharField(max_length=10, blank=True, default="Blue")
+    # Field 2
+    f2_enabled = models.BooleanField(blank=True, default=False)
+    f2_t1_color = models.CharField(max_length=10, blank=True, default="Green")
+    f2_t2_color = models.CharField(max_length=10, blank=True, default="Yellow")
+    # Field 3
+    f3_enabled = models.BooleanField(blank=True, default=False)
+    f3_t1_color = models.CharField(max_length=10, blank=True, default="Pink")
+    f3_t2_color = models.CharField(max_length=10, blank=True, default="Purple")
 
 class ScoringCriteria(models.Model):
     # The individual tasks in a scoring category, can only be modified by

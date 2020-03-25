@@ -21,6 +21,7 @@ class ScoreConsumer(AsyncConsumer):
         print("Receive: ", event)
         data = event.get('text', None)
         print("data")
+        # TODO: Send different data based on field number
         if data:
             loaded_data = json.loads(data)
             

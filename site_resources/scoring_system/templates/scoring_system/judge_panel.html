@@ -1,0 +1,80 @@
+{% extends 'scoring_system/base.html' %}
+{% load static %}
+
+{% block head %}
+    <title>Judging Dashboard</title>
+    <link rel="stylesheet" href="{% static 'scoring_system/css/judging.css' %}">
+{% endblock %}
+
+{% block content %}
+<form id="results-form" action="generate_results" method="POST">
+    {% csrf_token %}
+</form>
+<button type="submit" form="results-form" value="Submit">Generate Results Spreadsheet</button>
+<h1>Field Controls</h1>
+<form id="field-form" action="update_fields" method="POST">
+    <p class="field-header">Field 1</p>
+    <p class="team-color">Team 1 Color</p>
+    <select class="f1-t1">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="purple">Purple</option>
+    </select>
+    <p class="team-color">Team 2 Color</p>
+    <select class="f1-t2">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="purple">Purple</option>
+    </select>
+
+    <p class="field-header">Field 2</p>
+    <input type="checkbox" id="f2-enabled" name="f2-enabled">
+    <label for="f2-enabled">Field 2 Enabled</label>
+    <p class="team-color">Team 1 Color</p>
+    <select class="f2-t1">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="purple">Purple</option>
+    </select>
+    <p class="team-color">Team 2 Color</p>
+    <select class="f2-t2">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="purple">Purple</option>
+    </select>
+
+    <p class="field-header">Field 3</p>
+    <input type="checkbox" id="f3-enabled" name="f3-enabled">
+    <label for="f3-enabled">Field 3 Enabled</label>
+    <p class="team-color">Team 1 Color</p>
+    <select class="f3-t1">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="purple">Purple</option>
+    </select>
+    <p class="team-color">Team 2 Color</p>
+    <select class="f3-t2">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="purple">Purple</option>
+    </select>
+</form>
+{% endblock %}

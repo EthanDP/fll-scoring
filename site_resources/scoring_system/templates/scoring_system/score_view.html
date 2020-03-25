@@ -21,17 +21,24 @@
     <div class="score-div">
         <table class="team-table">
             <tr class="team-header">
-                <th class="red-name">
-                    Red
-                </th>
-                <th class="vs">
-                      
-                </th>
-                <th class="blue-name">
-                    Blue
-                </th>
+                {% if field == 1 %}
+                    <th class="t1-name">{{ field_data.f1_t1_color }}</th>
+                    <th class="vs"> </th>
+                    <th class="t2-name">{{ field_data.f1_t2_color }}</th>
+                {% elif field == 2 %}
+                    <th class="red-name">{{ field_data.f2_t1_color }}</th>
+                    <th class="vs"> </th>
+                    <th class="blue-name">{{ field_data.f2_t2_color }}</th>
+                {% elif field == 3 %}
+                    <th class="red-name">{{ field_data.f3_t1_color }}</th>
+                    <th class="vs"> </th>
+                    <th class="blue-name">{{ field_data.f3_t2_color }}</th>
+                {% else %}
+                    <h1>Invalid Field</h1>
+                {% endif %}
             </tr>
         </table>
+        
         <table class="score-table">
             <tr>
                 <th class="red-header">
