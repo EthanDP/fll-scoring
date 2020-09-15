@@ -1,5 +1,8 @@
 # FLL-Scoring #
-A live FIRST Lego League scoring website. Features a direct connection between referees and users so that scores can be displayed in real time.
+A live FIRST Lego League scoring website for the FLL City Shaper game. Features a direct connection between referees and users so that scores can be displayed in real time.
+
+# DISCLAIMER #
+Since the 2019-2020 FLL season is now over, this repository is now public. I recognize that typically you would not want to make an in-progress django centered project visible publically, but this is simply to showcase a previous project that is no longer being used.
 
 ## Development Installation (Linux) ##
 I would recommend Ubuntu to ensure installation instructions are the same as what I've written below.
